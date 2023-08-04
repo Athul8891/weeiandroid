@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "467369772433",
+    "firebase_url": "https://weei-a1903-default-rtdb.firebaseio.com",
+    "project_id": "weei-a1903",
+    "storage_bucket": "weei-a1903.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467369772433:android:ec20cecee3ebfe98adc630",
+        "android_client_info": {
+          "package_name": "com.atlabs.weeiapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467369772433-d3no5a2fdlhnfjghh3avtosjvllkcjbo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atlabs.weeiapp",
+            "certificate_hash": "7dbf0c71c89b8605ee89e93e0b484f53bed44b64"
+          }
+        },
+        {
+          "client_id": "467369772433-qh2j4p86f2fdb0qcaeutinjpvo0gb8mo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChd-phTPtY00gb6qsCSXMywD8Zymx0ldo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467369772433-qh2j4p86f2fdb0qcaeutinjpvo0gb8mo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

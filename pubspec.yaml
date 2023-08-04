@@ -1,0 +1,131 @@
+name: weei
+description: A new Flutter application.
+
+publish_to: 'none'
+
+
+version: 1.0.0+5
+
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints:
+  concentric_transition:
+  flutter_svg:
+  introduction_screen:
+  font_awesome_flutter:
+  pin_code_fields:
+  custom_navigation_bar:
+  step_progress_indicator:
+  flutter_balloon_slider:
+
+  permission_handler: ^10.1.0
+  webview_flutter: ^3.0.2
+  better_player:
+    git:
+      url: https://github.com/matthewrice345/betterplayer.git
+      ref: Issue1057
+  firebase_core: ^1.16.0
+  firebase_auth: ^3.3.17
+  firebase_database: ^9.0.14
+  file_picker: ^4.6.1
+  io: ^1.0.3
+  cloud_firestore: ^3.1.14
+  shared_preferences:
+  path_provider:
+  flutter_cache_manager:
+  youtube_player_flutter: ^8.0.0
+  fluttertoast:
+  image_picker:
+  image_cropper:
+  random_string:
+  intl:
+  video_thumbnail: ^0.5.2
+  paginate_firestore: ^1.0.3+1
+  flutter_spinkit: ^5.1.0
+  just_audio: ^0.9.28
+  firebase_pagination: ^1.0.0
+  youtube_explode_dart: ^1.12.0
+  sn_progress_dialog:
+  flutter_ringtone_player:
+  flutter_share: ^2.0.0
+  percent_indicator: ^4.0.1
+  record: ^4.1.1
+  stop_watch_timer: ^2.0.0
+  voice_message_package: ^0.0.74
+
+  shimmer: ^2.0.0
+  firebase_storage: ^10.2.18
+  provider:
+  flutter_vibrate:
+  wakelock: ^0.6.2
+  google_sign_in: ^5.3.1
+  internet_connection_checker: ^0.0.1+4
+  country_picker: ^2.0.15
+  url_launcher: ^6.1.2
+  firebase_messaging: ^11.4.1
+  flutter_local_notifications: 9.7.1
+  package_info:
+  open_store: ^0.4.0
+  connectivity_plus: ^2.3.6+1
+  chaleno: ^0.0.6
+  screen_state: ^2.0.0
+  flutter_web_browser:
+  google_mobile_ads: 2.0.1
+  timezone: ^0.8.0
+  direct_link: ^0.1.9
+  flutter_insta: ^1.0.1
+  easy_audio_player:
+  background_fetch: ^1.1.3
+  safe_url_check: ^1.1.1
+#  flutter_playout: ^2.0.2-rc3
+#  flutter_in_app_pip:
+#  audio_manager: ^0.8.2
+#  just_audio_background:
+#  music_visualizer: ^1.0.2
+#  audio_service: ^0.18.10
+#  just_audio_background:
+##  media_info:
+#  audio_video_progress_bar: ^1.0.0
+#  get_it: ^7.2.0
+#
+#  audio_service: ^0.18.9
+#  chewie_audio: ^1.5.0
+#  video_player:
+
+
+
+
+
+
+#  youtube_player_webview:
+
+#  video_player: ^2.4.2
+#  sms_autofill: ^2.2.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/svg/
+
+  fonts:
+    - family: mon
+      fonts:
+        - asset: assets/font/Montserrat.ttf
+          weight: 400
+        - asset: assets/font/Montserrat-Bold.ttf
+          weight: 600
+
