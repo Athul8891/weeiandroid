@@ -1,5 +1,6 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:safe_url_check/safe_url_check.dart';
 
 import 'dart:convert';
 import 'dart:io';
@@ -649,7 +650,23 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen2> {
   void playNext(index,ctx)async{
 
 
-    var _url = await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
+    var _url;
+
+    _url = await await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
+    final exists = await safeUrlCheck(
+      Uri.parse(_url),
+      //  userAgent: 'myexample/1.0.0 (+https://example.com)',
+    );
+    if (exists) {
+      _url = _url;
+      print('The url: https://google.com is NOT broken');
+    }else{
+      print('The url: https://google.com is  broken');
+
+      _url = await await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
+
+
+    }
     databaseReference.child('channel').child(widget.id).update({
       'url': _url,
 

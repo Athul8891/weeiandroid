@@ -72,7 +72,7 @@ _onVerificationCompleted(PhoneAuthCredential authCredential) async {
       }
     }
 
-      isLoading = false;
+    isLoading = false;
 
     // Navigator.pushNamedAndRemoveUntil(
     //     context, Constants.homeNavigate, (route) => false);
@@ -90,7 +90,7 @@ _onVerificationFailed(FirebaseAuthException exception) {
 }
 
 _onCodeSent(String verificationId, int? forceResendingToken) {
-   otpSentListener.setLang("false");
+  otpSentListener.setLang("false");
   verificationId = verificationId;
   print(forceResendingToken);
   print(verificationId);
@@ -116,7 +116,7 @@ _onCodeSent(String verificationId, int? forceResendingToken) {
 _onCodeTimeout(String timeout) {
   otpSentListener.setLang("false");
 
- // showToastSuccess(timeout.toString());
+  // showToastSuccess(timeout.toString());
 
   // otpSentListener.text=="TIMEOUT";
   return null;
@@ -140,7 +140,7 @@ void showMessage(String errorMessage ,context) {
         );
       }).then((value) {
 
-      isLoading = false;
+    isLoading = false;
 
   });
 }
@@ -170,7 +170,7 @@ Future verfyOtp(verification_Id,code,context,number)async {
             );
           }else{
             rslt = false;
-           showToastSuccess("Unable to fetch details! , Close the app and reopen");
+            showToastSuccess("Unable to fetch details! , Close the app and reopen");
           }
 
         }else{
@@ -198,94 +198,105 @@ Future verfyOtp(verification_Id,code,context,number)async {
 }
 
 Future getFirebaseUser(context) async {
- var _firebaseUser = await FirebaseAuth.instance.currentUser;
+  var _firebaseUser = await FirebaseAuth.instance.currentUser;
 
 
 
-    if (_firebaseUser != null) {
-      final User user = _firebaseUser;
-      final uid = user.uid;
+  if (_firebaseUser != null) {
+    final User user = _firebaseUser;
+    final uid = user.uid;
 
 
-      var rsp =await getFromUsers();
+    var rsp =await getFromUsers();
 
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => EnterNumber()),
-      // );
-      if(rsp!=0){
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => BottomNav()),
-        );
-      }else{
-
-      }
-
-
-    } else {
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => EnterNumber()),
+    // );
+    if(rsp!=0){
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => EnterNumber()),
+        MaterialPageRoute(builder: (context) => BottomNav()),
       );
+    }else{
+
     }
 
-    print(_firebaseUser);
+
+  } else {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => EnterNumber()),
+    );
+  }
+
+  print(_firebaseUser);
 
 }
 
 
 getInitainlData(path) async {
+  await _firestore
+      .collection('Updater').doc(path.toString()).get().then((DocumentSnapshot documentSnapshot) async{
+    // var doc =await _firestore.collection('Updater').doc(path).get().then((snapshot) async{
+    // var rsp = await databaseReference.child('Updater').child(path).once().then(( snapshot) async {
 
 
-  var rsp = await databaseReference.child('Updater').child(path).once().then(( snapshot) async {
 
 
 
+    var   currentVersion=  documentSnapshot.get('currentVersion').toString();
+    var   mandatory=documentSnapshot.get('mandatory').toString();
+    var storage=documentSnapshot.get('storage').toString();
+    var txt=documentSnapshot.get('text').toString();
+    var build=documentSnapshot.get('buildVersion').toString();
+    var trems=documentSnapshot.get('terms').toString();
+    var privacy=documentSnapshot.get('privacy').toString();
+    var about=documentSnapshot.get('about').toString();
+    var adShow=documentSnapshot.get('Ad').toString();
+
+    var startAlert=documentSnapshot.get('startAlert').toString();
+    var startAlertDissmiss=documentSnapshot.get('startAlertDissmiss').toString();
+    var startAlertText=documentSnapshot.get('startAlertText').toString();
+    var startAlertTile=documentSnapshot.get('startAlertTile').toString();
+
+    print("storageee");
+    print(build);
+
+    // _firestore.collection('Updater').doc('ios').set(
+    //     {
+    //
+    //       "currentVersion":currentVersion,
+    //       "mandatory":mandatory,
+    //       "storage":storage,
+    //       "text":txt,
+    //       "buildVersion":build,
+    //       "terms":trems,
+    //       "privacy":privacy,
+    //       "about":about,
+    //       "adShow":adShow,
+    //
+    //     }
+    //
+    // );
 
 
-      var   currentVersion=snapshot.snapshot.child('currentVersion').value.toString();
-      var   mandatory=snapshot.snapshot.child('mandatory').value.toString();
-      var storage=snapshot.snapshot.child('storage').value.toString();
-      var txt=snapshot.snapshot.child('text').value.toString();
-      var build=snapshot.snapshot.child('buildVersion').value.toString();
-      var trems=snapshot.snapshot.child('terms').value.toString();
-      var privacy=snapshot.snapshot.child('privacy').value.toString();
-      var about=snapshot.snapshot.child('about').value.toString();
-      var adShow=snapshot.snapshot.child('Ad').value.toString();
+    var setCurrentVersion =await setSharedPrefrence(CURRENTVERSION, currentVersion);
+    var setMandatory =await setSharedPrefrence(MANDATORY, mandatory);
+    var setStorage =await setSharedPrefrence(STORAGE, storage);
+    var setText =await setSharedPrefrence(UPDATETEXT, txt);
+    var setbuild =await setSharedPrefrence(BUILDVERSION, build);
 
-       print("storageee");
-       print(build);
-
-      // _firestore.collection('Updater').doc('ios').set(
-      //     {
-      //
-      //       "currentVersion":currentVersion,
-      //       "mandatory":mandatory,
-      //       "storage":storage,
-      //       "text":txt,
-      //       "buildVersion":build,
-      //       "terms":trems,
-      //       "privacy":privacy,
-      //       "about":about,
-      //       "adShow":adShow,
-      //
-      //     }
-      //
-      // );
+    var trem =await setSharedPrefrence(TERMSAND, trems);
+    var privac =await setSharedPrefrence(PRIVACYPOLICY, privacy);
+    var abou =await setSharedPrefrence(ABOUT, about);
+    var showAd =await setSharedPrefrence(SHOWAD, adShow);
 
 
-       var setCurrentVersion =await setSharedPrefrence(CURRENTVERSION, currentVersion);
-       var setMandatory =await setSharedPrefrence(MANDATORY, mandatory);
-       var setStorage =await setSharedPrefrence(STORAGE, storage);
-       var setText =await setSharedPrefrence(UPDATETEXT, txt);
-       var setbuild =await setSharedPrefrence(BUILDVERSION, build);
-
-       var trem =await setSharedPrefrence(TERMSAND, trems);
-       var privac =await setSharedPrefrence(PRIVACYPOLICY, privacy);
-       var abou =await setSharedPrefrence(ABOUT, about);
-       var showAd =await setSharedPrefrence(SHOWAD, adShow);
-
+    await setSharedPrefrence(STARTALERTSHOW, startAlert);
+    await setSharedPrefrence(STARTALERTDISSMISS, startAlertDissmiss);
+    await setSharedPrefrence(STARTALERT_TXT, startAlertText);
+    await setSharedPrefrence(STARTALERT_TITLE, startAlertTile);
 
 
     // ignore: void_checks
@@ -308,8 +319,8 @@ Future signInWithGoogle(context) async {
     idToken: googleSignInAuthentication.idToken,
   );
   var authResult = await _auth.signInWithCredential(credential);
- var _user = authResult.user;
- // assert(_user!.isAnonymous);
+  var _user = authResult.user;
+  // assert(_user!.isAnonymous);
 
 
   assert(await _user?.getIdToken() != null);

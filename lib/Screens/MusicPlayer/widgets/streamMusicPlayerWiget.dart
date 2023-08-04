@@ -104,23 +104,23 @@ class _audioPlayerScreenState extends State<audioPlayerStreamWidget> {
             // mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                  height: null,
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 2),
-                      Text("Playing from", style: size14_500W),
-                      Text("Room #" + widget.id.toString(),
-                          style: size14_600W),
-
-
-                      SizedBox(height: 10),
-                      // Text("Game of Thrones", style: size14_600W),
-                    ],
-                  )),
+              // Container(
+              //     height: null,
+              //     alignment: Alignment.center,
+              //     child: Column(
+              //       children: [
+              //         SizedBox(height: 2),
+              //         Text("Playing from", style: size14_500W),
+              //         Text("Room #" + widget.id.toString(),
+              //             style: size14_600W),
+              //
+              //
+              //         SizedBox(height: 10),
+              //         // Text("Game of Thrones", style: size14_600W),
+              //       ],
+              //     )),
               ///
-              SizedBox(height: 10,),
+              SizedBox(height: 5,),
               AspectRatio(
                 aspectRatio: 1/1,
                 child: StreamBuilder<SequenceState?>(
@@ -173,7 +173,7 @@ class _audioPlayerScreenState extends State<audioPlayerStreamWidget> {
                   final state = snapshot.data;
                   if (state?.sequence.isEmpty ?? true) return const SizedBox();
                   final metadata = state!.currentSource!.tag as MediaItem;
-                 // widget.diffIndexPlaying.text=metadata.title;
+                  // widget.diffIndexPlaying.text=metadata.title;
                   return Container(
                       child: Column(
                         children: [
@@ -190,16 +190,16 @@ class _audioPlayerScreenState extends State<audioPlayerStreamWidget> {
                 },
               ),
               ///
-              h(15),
+              h(5),
               AudioPlayerSeekBar(audioPlayer:widget.audioPlayer,seekListener:widget.seekListener),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   widget.type=="JOIN"?Container(): Container(
-                    margin: EdgeInsets.only(top: 15),
+                      margin: EdgeInsets.only(top: 15),
                       child: LoopButton(player: widget.audioPlayer)),
-                   Spacer(),
+                  Spacer(),
                   ControlButtons(widget.audioPlayer,widget.autoPlay,widget.seekListener),
                   Spacer(),
                   widget.type=="JOIN"?Container():Container(
@@ -211,7 +211,7 @@ class _audioPlayerScreenState extends State<audioPlayerStreamWidget> {
 
 
 
-              const SizedBox(height: 8.0),
+              // const SizedBox(height: 8.0),
 
               //  Visibility(visible:false,child: SizedBox(height:1,child: PlaylistView(player: _audioPlayer, playlist: _playlist)))
             ],
@@ -220,7 +220,7 @@ class _audioPlayerScreenState extends State<audioPlayerStreamWidget> {
     )
 
 
-     ;
+    ;
   }
 
 

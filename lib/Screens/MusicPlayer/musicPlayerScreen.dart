@@ -178,6 +178,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
 
   bool _isInForeground = true;
+  bool _bgAlert = true;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
@@ -185,12 +186,12 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
   void initState() {
     // initPlatformState();
     showInterstitialAd();
-    apologySheet();
+
     Noti.initialize(flutterLocalNotificationsPlugin);
     WidgetsBinding.instance.addObserver(this);
 
     voiceNotePlayingListner.addListener((){
-   if(voiceNotePlayingListner.text=="true"){
+      if(voiceNotePlayingListner.text=="true"){
 
         player.setVolume(0.1);
       }else{
@@ -237,7 +238,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
       this.listenIndex();
 
     }
-   // backupPlaylist();
+    // backupPlaylist();
     this.updateTime();
 
 
@@ -277,10 +278,12 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
         break;
       case AppLifecycleState.inactive:
         print("statussss");
-        Noti.showBigTextNotification(title: "Weei is in background", body: "Make sure to place the app foreground before locking the screen ,OS may kill the app and background process", fln: flutterLocalNotificationsPlugin);
+        if(_bgAlert==true){
+          Noti.showBigTextNotification(title: "Gentle Reminder", body: "Make sure to place the app foreground before locking the screen .\n OS may kill the app and background process", fln: flutterLocalNotificationsPlugin);
+        }
 
 
-
+        _bgAlert=false;
 
         break;
       case AppLifecycleState.paused:
@@ -311,121 +314,121 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
         break;
       case "CHATALERT_TRUE":
-          chatAlert=true;
-          refreshState();
+        chatAlert=true;
+        refreshState();
 
         break;
 
 
       case "CHATALERT_FALSE":
-          chatAlert=false;
-          refreshState();
+        chatAlert=false;
+        refreshState();
 
-          break;
+        break;
 
       case "JOINALERT_TRUE":
 
 
 
-          joinAlert=true;
-          refreshState();
+        joinAlert=true;
+        refreshState();
 
-          break;
+        break;
 
 
       case "JOINALERT_FALSE":
 
-          joinAlert=false;
-          refreshState();
+        joinAlert=false;
+        refreshState();
 
-          break;
+        break;
 
 
 
       case "ADMINCONTROLS_TRUE":
 
-          creatorControl=true;
-          refreshState();
+        creatorControl=true;
+        refreshState();
 
-          break;
+        break;
 
 
       case "ADMINCONTROLS_FALSE":
         refreshState();
 
         creatorControl=false;
-          refreshState();
+        refreshState();
 
-          break;
+        break;
 
 
       case "JOINCONTROLS_TRUE":
 
-          controlJoined=true;
-          refreshState();
+        controlJoined=true;
+        refreshState();
 
-          break;
+        break;
 
 
       case "JOINCONTROLS_FALSE":
 
-          controlJoined=false;
-          refreshState();
+        controlJoined=false;
+        refreshState();
 
-          break;
+        break;
 
 
     ///chat alert single controls
     ///sound
       case "CHATSOUND_TRUE":
 
-          chatSound=true;
-          refreshState();
+        chatSound=true;
+        refreshState();
 
-          break;
+        break;
 
 
       case "CHATSOUND_FALSE":
 
-          chatSound=false;
-          refreshState();
+        chatSound=false;
+        refreshState();
 
-          break;
+        break;
 
     ///sound
 
     ///vibrate
       case "CHATVIBRATE_TRUE":
 
-          chatVibrate=true;
-          refreshState();
+        chatVibrate=true;
+        refreshState();
 
-          break;
+        break;
 
 
       case "CHATVIBRATE_FALSE":
 
-          chatVibrate=false;
-          refreshState();
+        chatVibrate=false;
+        refreshState();
 
-          break;
+        break;
     ///vibrate
     ///
     ///pop
       case "CHATPOPUP_TRUE":
 
-          chatPopup=true;
-          refreshState();
+        chatPopup=true;
+        refreshState();
 
-          break;
+        break;
 
 
       case "CHATPOPUP_FALSE":
 
-          chatPopup=false;
-          refreshState();
+        chatPopup=false;
+        refreshState();
 
-          break;
+        break;
     ///pop
     }
   }
@@ -471,57 +474,57 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
         case "private":
           var rsp = data.snapshot.value.toString();
 
-            private=rsp.toString();
-            refreshState();
+          private=rsp.toString();
+          refreshState();
 
-            break;
+          break;
         case "index":
         // do something
 
           var rsp = data.snapshot.value.toString();
 
 
-            currentIndex = int.parse(rsp.toString());
-            refreshState();
+          currentIndex = int.parse(rsp.toString());
+          refreshState();
           //  loadNewAudioAdmin(currentIndex);
 
           //  loadNewAudioAdmin((currentIndex+1));
 
 
-            // if(widget.type=="JOIN"){
-            //  // var link = await getSong(playList[i]['fileUrl'].toString(),playList[i]['fileType'].toString());
-            //
-            //
-            //   _playlist.insert(currentIndex, AudioSource.uri(
-            //     Uri.parse(url),
-            //     tag: MediaItem(
-            //       // Specify a unique ID for each media item:
-            //       id:currentIndex.toString(),
-            //       // Metadata to display in the notification:
-            //       album: "Weei Audio",
-            //       title: playList[currentIndex]['fileName'].toString(),
-            //       artUri: Uri.parse(playList[currentIndex]['fileThumb'].toString()),
-            //       artist:  playList[currentIndex]['fileType'].toString(),
-            //       // extras: {
-            //       //   'fileName':  playList[i]['fileName'].toString(),
-            //       //   'fileThumb':  playList[i]['fileThumb'].toString(),
-            //       //   'fileUrl':  playList[i]['fileUrl'].toString(),
-            //       //   'fileType':  playList[i]['fileType'].toString(),
-            //       //
-            //       // },
-            //     ),
-            //   ));
-            //
-            //   getControl("seekTo");
-            //   Future.delayed(const Duration(seconds: 5), () {goLive(); });
-            // }
+          // if(widget.type=="JOIN"){
+          //  // var link = await getSong(playList[i]['fileUrl'].toString(),playList[i]['fileType'].toString());
+          //
+          //
+          //   _playlist.insert(currentIndex, AudioSource.uri(
+          //     Uri.parse(url),
+          //     tag: MediaItem(
+          //       // Specify a unique ID for each media item:
+          //       id:currentIndex.toString(),
+          //       // Metadata to display in the notification:
+          //       album: "Weei Audio",
+          //       title: playList[currentIndex]['fileName'].toString(),
+          //       artUri: Uri.parse(playList[currentIndex]['fileThumb'].toString()),
+          //       artist:  playList[currentIndex]['fileType'].toString(),
+          //       // extras: {
+          //       //   'fileName':  playList[i]['fileName'].toString(),
+          //       //   'fileThumb':  playList[i]['fileThumb'].toString(),
+          //       //   'fileUrl':  playList[i]['fileUrl'].toString(),
+          //       //   'fileType':  playList[i]['fileType'].toString(),
+          //       //
+          //       // },
+          //     ),
+          //   ));
+          //
+          //   getControl("seekTo");
+          //   Future.delayed(const Duration(seconds: 5), () {goLive(); });
+          // }
 
-            break;
+          break;
         case "url":
           var rsp = data.snapshot.value.toString();
 
-            url = rsp.toString();
-            loadNewAudioAdmin(url);
+          url = rsp.toString();
+          loadNewAudioAdmin(url);
           // if(widget.type=="JOIN"){
           //   // var link = await getSong(playList[i]['fileUrl'].toString(),playList[i]['fileType'].toString());
           //
@@ -549,34 +552,34 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
           //   getControl("seekTo");
           //   Future.delayed(const Duration(seconds: 5), () {goLive(); });
           // }
-            refreshState();
+          refreshState();
 
-            break;
+          break;
 
         case "name":
           var rsp = data.snapshot.value.toString();
 
-            name = rsp.toString();
-            refreshState();
+          name = rsp.toString();
+          refreshState();
 
-            break;
+          break;
         case "videoType":
           var rsp = data.snapshot.value.toString();
 
-            videoType = rsp.toString();
-            refreshState();
+          videoType = rsp.toString();
+          refreshState();
 
-            break;
-         case "time":
-        var rsp = data.snapshot.value.toString();
-        if (this.mounted) {
+          break;
+        case "time":
+          var rsp = data.snapshot.value.toString();
+          if (this.mounted) {
 
 
-          adminTime = int.parse(rsp.toString());
+            adminTime = int.parse(rsp.toString());
             refreshState();
 
           }
-        break;
+          break;
 
         case "exit":
           var rsp = data.snapshot.value.toString();
@@ -635,10 +638,10 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
           refreshState();
 
           thumbnail = rsp;
-            refreshState();
+          refreshState();
 
 
-            break;
+          break;
         case "controller":
           var rsp = data.snapshot.value.toString();
           print("controller");
@@ -648,9 +651,9 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
           refreshState();
 
           controller = rsp;
-            refreshState();
+          refreshState();
 
-            if(creatorControl==true){
+          if(creatorControl==true){
             getControl(rsp);
 
           }
@@ -660,12 +663,12 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
           var rsp = data.snapshot.value;
 
 
-            joinList = rsp;
-            participantsBubble=true;
+          joinList = rsp;
+          participantsBubble=true;
 
-            refreshState();
+          refreshState();
 
-            if(widget.type=="CREATE"){
+          if(widget.type=="CREATE"){
             if(totalJoined !=joinList.length){
 
               if(joinAlert==true){
@@ -677,45 +680,46 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
               }
 
-                totalJoined=joinList.length;
-                refreshState();
+              totalJoined=joinList.length;
+              refreshState();
 
-              }else{
+            }else{
 
-                totalJoined=joinList.length;
-                refreshState();
+              totalJoined=joinList.length;
+              refreshState();
 
-              }
+            }
 
 
             if(joinBottomShowed==false){
               joinBottomSheet();
             }
 
-              joinBottomShowed=true;
-              refreshState();
+            joinBottomShowed=true;
+            refreshState();
 
-            }
+          }
 
           // print(totalJoined);
           break;
 
         case "intialStart":
           var rsp = data.snapshot.value.toString();
-            setState(() {
-              intialStart = rsp.toString();
+          setState(() {
+            intialStart = rsp.toString();
 
-            });
-            refreshState();
+          });
+          refreshState();
 
-            break;
+          break;
       }
     });
   }
 
   void getIntialData() async {
+
     print("initiall get");
-  await  databaseReference
+    await  databaseReference
         .child('channel')
         .child(widget.id.toString())
         .once()
@@ -769,18 +773,20 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
       //   print("feethh");
       //   videoInitilize();
       // }
-       if(widget.concatenatingAudioSource.length==0){
-         addToPlaylist();
-         print("throug playlist");
-       }else{
-         print("not playlist");
+      if(widget.concatenatingAudioSource.length==0){
+        addToPlaylist();
+        print("throug playlist");
+      }else{
+        print("not playlist");
 
-         _playlist.addAll(widget.concatenatingAudioSource.children).onError((error, stackTrace) => print("failllll "+error.toString()));
-         setState(() {
-           intialLoading=false;
-         });
-       }
-       print("initiall pl end");
+        _playlist.addAll(widget.concatenatingAudioSource.children).onError((error, stackTrace) => print("failllll "+error.toString()));
+        setState(() {
+          intialLoading=false;
+        });
+
+        apologySheet();
+      }
+      print("initiall pl end");
 
       //  setUpChannel("playList[0][0]['fileUrl']");
     });
@@ -837,50 +843,52 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
       //  _audioPlayer.play();
 
     });
+
+    apologySheet();
   }
 
   listenIndex(){
 
 
 
-      player.currentIndexStream.listen((index) {
+    player.currentIndexStream.listen((index) {
 
 
 
-        print("listenn indexx2");
-          if(intialLoading==false){
+      print("listenn indexx2");
+      if(intialLoading==false){
 
 
-            print("listenn indexx1");
-               print(index);
+        print("listenn indexx1");
+        print(index);
 
-           currentIndex =index;
-           // loadNewAudioAdmin((index!+1));
+        currentIndex =index;
+        // loadNewAudioAdmin((index!+1));
 
-           refreshState();
-           updateUrl(index);
-
-        }
-
-      });
-
-
-
-
-      player.playingStream.listen((value) {
-        setControls(value==true?'play':'pause');
-      });
-      player.playerStateStream.listen((processingState) {
-
-        if (processingState.processingState == ProcessingState.loading || processingState.processingState == ProcessingState.buffering) {
-          setControls('pause');
-        }else{
-          setControls(player.playing==true?'play':'pause');
-        }
+        refreshState();
+        updateUrl(index);
 
       }
-      );
-  //  }
+
+    });
+
+
+
+
+    player.playingStream.listen((value) {
+      setControls(value==true?'play':'pause');
+    });
+    player.playerStateStream.listen((processingState) {
+
+      if (processingState.processingState == ProcessingState.loading || processingState.processingState == ProcessingState.buffering) {
+        setControls('pause');
+      }else{
+        setControls(player.playing==true?'play':'pause');
+      }
+
+    }
+    );
+    //  }
 
   }
   loadNewAudioAdmin(url)async{
@@ -889,104 +897,104 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
     // player.currentIndexStream.listen((i) async{
 
-      // if(playlistBackuped==true){
-      //   print("backupp kayatunn");
-      //   _playlist.clear();
-      //  var sv = await  _playlist.addAll(_playlistBackup.children);
-      //    playlistBackuped=false;
-      //      refreshState();
-      //     if(widget.type=="CREATE"){
-      //        player.seek(Duration(seconds: 0),index: index);
-      //     }else{
-      //        goLive();
-      //     }
-      //   print("backupp erakkunnu");
-      //
-      // }
+    // if(playlistBackuped==true){
+    //   print("backupp kayatunn");
+    //   _playlist.clear();
+    //  var sv = await  _playlist.addAll(_playlistBackup.children);
+    //    playlistBackuped=false;
+    //      refreshState();
+    //     if(widget.type=="CREATE"){
+    //        player.seek(Duration(seconds: 0),index: index);
+    //     }else{
+    //        goLive();
+    //     }
+    //   print("backupp erakkunnu");
+    //
+    // }
 
-     // player.stop();
-       //print("refreshing next item : "+i.toString());
-      // var link = await getSong(playList[i]['fileUrl'].toString(),playList[i]['fileType'].toString());
-      //
-      //
-      // _playlist.insert(i!, AudioSource.uri(
-      //   Uri.parse(link),
-      //   tag: MediaItem(
-      //     // Specify a unique ID for each media item:
-      //     id:i.toString(),
-      //     // Metadata to display in the notification:
-      //     album: "Weei Audio",
-      //     title: playList[i]['fileName'].toString(),
-      //     artUri: Uri.parse(playList[i]['fileThumb'].toString()),
-      //     artist:  playList[i]['fileType'].toString(),
-      //     // extras: {
-      //     //   'fileName':  playList[i]['fileName'].toString(),
-      //     //   'fileThumb':  playList[i]['fileThumb'].toString(),
-      //     //   'fileUrl':  playList[i]['fileUrl'].toString(),
-      //     //   'fileType':  playList[i]['fileType'].toString(),
-      //     //
-      //     // },
-      //   ),
-      // ));
-      // _playlist.removeAt((i+1));
+    // player.stop();
+    //print("refreshing next item : "+i.toString());
+    // var link = await getSong(playList[i]['fileUrl'].toString(),playList[i]['fileType'].toString());
+    //
+    //
+    // _playlist.insert(i!, AudioSource.uri(
+    //   Uri.parse(link),
+    //   tag: MediaItem(
+    //     // Specify a unique ID for each media item:
+    //     id:i.toString(),
+    //     // Metadata to display in the notification:
+    //     album: "Weei Audio",
+    //     title: playList[i]['fileName'].toString(),
+    //     artUri: Uri.parse(playList[i]['fileThumb'].toString()),
+    //     artist:  playList[i]['fileType'].toString(),
+    //     // extras: {
+    //     //   'fileName':  playList[i]['fileName'].toString(),
+    //     //   'fileThumb':  playList[i]['fileThumb'].toString(),
+    //     //   'fileUrl':  playList[i]['fileUrl'].toString(),
+    //     //   'fileType':  playList[i]['fileType'].toString(),
+    //     //
+    //     // },
+    //   ),
+    // ));
+    // _playlist.removeAt((i+1));
 
-      // print("changingg"+ i.toString());
-      // print(playList[i]['fileName'].toString());
-      // if(widget.type=="CREATE"){
-      //   player.seek(Duration(seconds: 0),index: i);
-      //   Future.delayed(const Duration(seconds: 2), () {player.play();});
-      // }else{
-      //     getControl("seekTo");
-      //     Future.delayed(const Duration(seconds: 6), () {goLive(); });
-      // }
+    // print("changingg"+ i.toString());
+    // print(playList[i]['fileName'].toString());
+    // if(widget.type=="CREATE"){
+    //   player.seek(Duration(seconds: 0),index: i);
+    //   Future.delayed(const Duration(seconds: 2), () {player.play();});
+    // }else{
+    //     getControl("seekTo");
+    //     Future.delayed(const Duration(seconds: 6), () {goLive(); });
+    // }
 
-     //player.play();
+    //player.play();
 
     // });
 
 
     //  }
 
-       if(widget.type=="JOIN"){
-         var link;
-         final exists = await safeUrlCheck(
-           Uri.parse(url),
-         //  userAgent: 'myexample/1.0.0 (+https://example.com)',
-         );
-         if (exists) {
-           link = url;
-           print('The url: https://google.com is NOT broken');
-         }else{
-           print('The url: https://google.com is  broken');
+    if(widget.type=="JOIN"){
+      var link;
+      final exists = await safeUrlCheck(
+        Uri.parse(url),
+        //  userAgent: 'myexample/1.0.0 (+https://example.com)',
+      );
+      if (exists) {
+        link = url;
+        print('The url: https://google.com is NOT broken');
+      }else{
+        print('The url: https://google.com is  broken');
 
-           link = await getSong(playList[currentIndex]['fileUrl'].toString(),playList[currentIndex]['fileType'].toString());
+        link = await getSong(playList[currentIndex]['fileUrl'].toString(),playList[currentIndex]['fileType'].toString());
 
-         }
+      }
 
 
-         _playlist.insert(currentIndex, AudioSource.uri(
-           Uri.parse(link),
-           tag: MediaItem(
-             // Specify a unique ID for each media item:
-             id:currentIndex.toString(),
-             // Metadata to display in the notification:
-             album: "Weei Audio",
-             title: playList[currentIndex]['fileName'].toString(),
-             artUri: Uri.parse(playList[currentIndex]['fileThumb'].toString()),
-             artist:  playList[currentIndex]['fileType'].toString(),
-             // extras: {
-             //   'fileName':  playList[i]['fileName'].toString(),
-             //   'fileThumb':  playList[i]['fileThumb'].toString(),
-             //   'fileUrl':  playList[i]['fileUrl'].toString(),
-             //   'fileType':  playList[i]['fileType'].toString(),
-             //
-             // },
-           ),
-         ));
+      _playlist.insert(currentIndex, AudioSource.uri(
+        Uri.parse(link),
+        tag: MediaItem(
+          // Specify a unique ID for each media item:
+          id:currentIndex.toString(),
+          // Metadata to display in the notification:
+          album: "Weei Audio",
+          title: playList[currentIndex]['fileName'].toString(),
+          artUri: Uri.parse(playList[currentIndex]['fileThumb'].toString()),
+          artist:  playList[currentIndex]['fileType'].toString(),
+          // extras: {
+          //   'fileName':  playList[i]['fileName'].toString(),
+          //   'fileThumb':  playList[i]['fileThumb'].toString(),
+          //   'fileUrl':  playList[i]['fileUrl'].toString(),
+          //   'fileType':  playList[i]['fileType'].toString(),
+          //
+          // },
+        ),
+      ));
 
-         getControl("seekTo");
-         Future.delayed(const Duration(seconds: 5), () {goLive(); });
-       }
+      getControl("seekTo");
+      Future.delayed(const Duration(seconds: 5), () {goLive(); });
+    }
 
   }
   void updateUrl(index) async {
@@ -1056,7 +1064,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
   refreshPlayList()async{
     if(intialStart=="true"&&pageExit==false){
-   //   _playlistBackup.clear();
+      //   _playlistBackup.clear();
       print("backupp list refresh started"+currentIndex.toString());
 
       for (var i = 0; i < playList.length; i++) {
@@ -1094,7 +1102,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
         }
         playlistBackuped=true;
         refreshState();
-        }
+      }
 
       print("backupp list refresh ended");
     }
@@ -1102,41 +1110,41 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
   }
 
-   // diffrentIndexPlaying(){
-   // if(diffIndexPlaying.text.toString()!=playList[currentIndex]['fileName'].toString()){
-   //   player.pause();
-   //
-   //   _playlist.insert(currentIndex, AudioSource.uri(
-   //     Uri.parse(url),
-   //     tag: MediaItem(
-   //       // Specify a unique ID for each media item:
-   //       id:currentIndex.toString(),
-   //       // Metadata to display in the notification:
-   //       album: "Weei Audio",
-   //       title: playList[currentIndex]['fileName'].toString(),
-   //       artUri: Uri.parse(playList[currentIndex]['fileThumb'].toString()),
-   //       artist:  playList[currentIndex]['fileType'].toString(),
-   //       // extras: {
-   //       //   'fileName':  playList[i]['fileName'].toString(),
-   //       //   'fileThumb':  playList[i]['fileThumb'].toString(),
-   //       //   'fileUrl':  playList[i]['fileUrl'].toString(),
-   //       //   'fileType':  playList[i]['fileType'].toString(),
-   //       //
-   //       // },
-   //     ),
-   //   ));
-   //
-   //   getControl("seekTo");
-   //   Future.delayed(const Duration(seconds: 5), () {goLive(); });
-   //    if(controller=='play'){
-   //      player.play();
-   //
-   //    }
-   // }
-   //
-   //
-   //
-   // }
+  // diffrentIndexPlaying(){
+  // if(diffIndexPlaying.text.toString()!=playList[currentIndex]['fileName'].toString()){
+  //   player.pause();
+  //
+  //   _playlist.insert(currentIndex, AudioSource.uri(
+  //     Uri.parse(url),
+  //     tag: MediaItem(
+  //       // Specify a unique ID for each media item:
+  //       id:currentIndex.toString(),
+  //       // Metadata to display in the notification:
+  //       album: "Weei Audio",
+  //       title: playList[currentIndex]['fileName'].toString(),
+  //       artUri: Uri.parse(playList[currentIndex]['fileThumb'].toString()),
+  //       artist:  playList[currentIndex]['fileType'].toString(),
+  //       // extras: {
+  //       //   'fileName':  playList[i]['fileName'].toString(),
+  //       //   'fileThumb':  playList[i]['fileThumb'].toString(),
+  //       //   'fileUrl':  playList[i]['fileUrl'].toString(),
+  //       //   'fileType':  playList[i]['fileType'].toString(),
+  //       //
+  //       // },
+  //     ),
+  //   ));
+  //
+  //   getControl("seekTo");
+  //   Future.delayed(const Duration(seconds: 5), () {goLive(); });
+  //    if(controller=='play'){
+  //      player.play();
+  //
+  //    }
+  // }
+  //
+  //
+  //
+  // }
   void listenError() async{
     player.playerStateStream.listen((processingState) {
 
@@ -1195,25 +1203,27 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
         //refreshState();
       }else{
-         playerStateError=false;
+        playerStateError=false;
         _stopWatchTimer.onStopTimer();
         _stopWatchTimer.onResetTimer();
         refreshState();
 
       }
 
-     // if (processingState.processingState == ProcessingState.completed) {
-     //    if(playlistBackuped==true){
-     //      print("backupp kayatunn");
-     //      _playlist.addAll(_playlistBackup.children);
-     //      playlistBackuped=false;
-     //      refreshState();
-     //      print("backupp erakkunnu");
-     //
-     //    }
+      // if (processingState.processingState == ProcessingState.completed) {
+      //    if(playlistBackuped==true){
+      //      print("backupp kayatunn");
+      //      _playlist.addAll(_playlistBackup.children);
+      //      playlistBackuped=false;
+      //      refreshState();
+      //      print("backupp erakkunnu");
+      //
+      //    }
 
-        // Some Stuff
-   //   }
+      // Some Stuff
+      //   }
+
+
 
     });
 
@@ -1237,7 +1247,19 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
           databaseReference.child('time').child(widget.id).update({
             'time': time.inMilliseconds.toString(),
           });
+          // print("looop index");
+          //  print(player.loopMode.index);
+
+          if ((time.inMilliseconds >= player.duration!.inMilliseconds)&&player.loopMode.index==0&&_playlist.length==1) {
+            player.pause();
+            //autoPlay();
+          }
           // sendTimeToDb();
+        }else{
+          // if (time.inMilliseconds >= player.duration!.inMilliseconds) {
+          //   player.pause();
+          //   //autoPlay();
+          // }
         }
       }
 
@@ -1301,11 +1323,11 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
   getCurrentTime()async{
 
 
-      var rsp = await  databaseReference.child('time').child(widget.id).once().then(( snapshot) async {
+    var rsp = await  databaseReference.child('time').child(widget.id).once().then(( snapshot) async {
       var rsp = snapshot.snapshot.child('time').value;
 
-        adminTime=int.parse(rsp.toString());
-     //   player.seek(Duration(milliseconds: adminTime),index: currentIndex);
+      adminTime=int.parse(rsp.toString());
+      //   player.seek(Duration(milliseconds: adminTime),index: currentIndex);
 
     });
   }
@@ -1325,12 +1347,12 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
       }
       if (control == "pause") {
 
-          player.pause();
-          musicPlaying = false;
-          refreshState();
+        player.pause();
+        musicPlaying = false;
+        refreshState();
 
 
-          getCurrentTime();
+        getCurrentTime();
       }
       if (control == "next") {
         // player.dispose();
@@ -1344,7 +1366,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
         print("fuckk");
         // _betterPlayerController. videoPlayerController?.dispose();
         // videoInitilize();
-         goLive();
+        goLive();
 //         Future.delayed(const Duration(seconds: 1), () {
 //
 // // Here you can write your code
@@ -1366,71 +1388,71 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
   }
 
   void setControls(event) {
-     if(widget.type=="CREATE"){
+    if(widget.type=="CREATE"){
 
-       if(controlJoined==false){
+      if(controlJoined==false){
 
-         return;
-       }
+        return;
+      }
 
-       if (event == "seekTo") {
-         print("seekaney");
-         databaseReference.child('channel').child(widget.id).update({
-           'controller': event.toString(),
-           'time': yourTime.toString(),
-           'index': currentIndex.toString(),
+      if (event == "seekTo") {
+        print("seekaney");
+        databaseReference.child('channel').child(widget.id).update({
+          'controller': event.toString(),
+          'time': yourTime.toString(),
+          'index': currentIndex.toString(),
 
-         }).whenComplete((){
-           databaseReference.child('channel').child(widget.id).update({
-             'controller': player.playing==true?'play':'pause',
-             'time': yourTime.toString(),
-           });
-
-
+        }).whenComplete((){
+          databaseReference.child('channel').child(widget.id).update({
+            'controller': player.playing==true?'play':'pause',
+            'time': yourTime.toString(),
+          });
 
 
-         });
 
 
-       }
-       if (event == "play") {
-         databaseReference.child('channel').child(widget.id).update({
-           'controller': event.toString(),
-           'time': yourTime.toString(),
-         });
+        });
 
-       }
-       if (event == "pause") {
-         databaseReference.child('channel').child(widget.id).update({
-           'controller': event.toString(),
-           'time': yourTime.toString(),
-         });
 
-       }
-       if (event == "next") {
-         databaseReference.child('channel').child(widget.id).update({
-           'controller': event.toString(),
-           'time': yourTime.toString(),
-         });
+      }
+      if (event == "play") {
+        databaseReference.child('channel').child(widget.id).update({
+          'controller': event.toString(),
+          'time': yourTime.toString(),
+        });
 
-       }
+      }
+      if (event == "pause") {
+        databaseReference.child('channel').child(widget.id).update({
+          'controller': event.toString(),
+          'time': yourTime.toString(),
+        });
 
-       if (event == "exit") {
-         databaseReference.child('channel').child(widget.id).update({
-           'controller': event.toString(),
+      }
+      if (event == "next") {
+        databaseReference.child('channel').child(widget.id).update({
+          'controller': event.toString(),
+          'time': yourTime.toString(),
+        });
 
-         });
+      }
 
-         // Navigator.pop(context);
-       }
+      if (event == "exit") {
+        databaseReference.child('channel').child(widget.id).update({
+          'controller': event.toString(),
 
-     }
+        });
+
+        // Navigator.pop(context);
+      }
+
+    }
 
   }
 
   void goLive() async{
 
-   // player.pause();
+    // player.pause();
     var liv= await   getCurrentTime();
 
     player.seek(Duration(milliseconds: (int.parse(adminTime.toString())+500)),index: currentIndex);
@@ -1501,405 +1523,539 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
     double height = MediaQuery.of(context).size.height;
 
     return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: Scaffold(
-        endDrawer: VideoDrawerWidget(type: widget.type,id: widget.id,uid: auth.currentUser!.uid,controller: navigationListner,private: private,disableComment:chatAlert,disableJoinAlert:joinAlert,disableAdminControls:creatorControl,controlJoins:controlJoined,chatPopup: chatPopup,chatSound: chatSound,chatVibrate: chatVibrate,context:context),
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+          endDrawer: VideoDrawerWidget(type: widget.type,id: widget.id,uid: auth.currentUser!.uid,controller: navigationListner,private: private,disableComment:chatAlert,disableJoinAlert:joinAlert,disableAdminControls:creatorControl,controlJoins:controlJoined,chatPopup: chatPopup,chatSound: chatSound,chatVibrate: chatVibrate,context:context),
 
 
-        resizeToAvoidBottomInset: true,
-        appBar:
+          resizeToAvoidBottomInset: true,
+          appBar:
 
-        AppBar(
+          AppBar(
 
-          elevation: 0,
-          actions: [
-            ValueListenableBuilder(
-              valueListenable: _notifier,
-              builder: (BuildContext context, bool value, Widget? child) {
-                return Container(
-                  margin: EdgeInsets.only(top: 4),
-                  child: Stack(
-                    children: <Widget>[
-                      IconButton(
-                          onPressed: () {
+            elevation: 0,
+            actions: [
+              SizedBox(
+                width: 20,
+                child: IconButton(
+                    onPressed: () {
+                      chatBottomSheet(width);
+                      _notifier.value = !_notifier.value;
+                      // chatBottomSheet();
+                    },
+                    icon: Icon(CupertinoIcons.bubble_left,
+                        color:
+                        chatlistTap == true ? themeClr : Colors.white,
+                        size: 18)),
+              ),
+              SizedBox(width: 12,),
+              SizedBox(
+                width: 20,
+                child: IconButton(
+                    onPressed:(widget.type=="JOIN"&&intialStart=="false")?null: () {
+                      playlistBottomSheet(height);
 
-                            participantsBubble=false;
+                      // _notifier.value = !_notifier.value;
+                    },
+                    icon: Icon(CupertinoIcons.text_aligncenter,size: 18,
+                        color:
+                        playlistTap == true ? themeClr : Colors.white)),
+              ),
+              SizedBox(width: 12,),
 
-                            refreshState();
+              ValueListenableBuilder(
+                valueListenable: _notifier,
+                builder: (BuildContext context, bool value, Widget? child) {
+                  return Container(
+                    width: 20,
+                    margin: EdgeInsets.only(top: 4),
+                    child: Stack(
+                      children: <Widget>[
+
+                        IconButton(
+                            onPressed: () {
+
+                              participantsBubble=false;
+
+                              refreshState();
 
 
 
-                            joinBottomSheet();
-                          },
-                          icon: const Icon(CupertinoIcons.person_3, color: Colors.white)),
-                      Positioned(
-                        right: 5,
-                        top: 10,
-                        child:  participantsBubble==true?Container(
-                          padding: EdgeInsets.all(1),
-                          decoration:  BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          constraints: BoxConstraints(
-                            minWidth: 12,
-                            minHeight: 12,
-                          ),
-                          child: SpinKitDoubleBounce(
-                            color: Colors.white,
-                            size: 7,
-                          ),
-                        ):Container(),
+                              joinBottomSheet();
+                            },
+                            icon: const Icon(CupertinoIcons.person_3, color: Colors.white)),
+                        Positioned(
+                          right: 5,
+                          top: 10,
+                          child:  participantsBubble==true?Container(
+                            padding: EdgeInsets.all(1),
+                            decoration:  BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            constraints: BoxConstraints(
+                              minWidth: 12,
+                              minHeight: 12,
+                            ),
+                            child: SpinKitDoubleBounce(
+                              color: Colors.white,
+                              size: 7,
+                            ),
+                          ):Container(),
+                        )
+                      ],
+                    ),
+                  );
+                },
+
+              )
+              ,
+              SizedBox(width: 12,),
+
+              // ( widget.type == "JOIN"&&intialStart=="true"&&intialLoading==false)
+              //     ? ValueListenableBuilder(
+              //   valueListenable: _notifier,
+              //   builder: (BuildContext context, bool value, Widget? child) {
+              //     return Container(
+              //       margin: EdgeInsets.only(top: 15),
+              //       alignment:
+              //       Alignment.topRight,
+              //
+              //       //    color: Colors.black54,
+              //       child: Row(
+              //         mainAxisAlignment:
+              //         MainAxisAlignment
+              //             .end,
+              //         children: [
+              //           GestureDetector(
+              //             onTap: () {
+              //               goLive();
+              //             },
+              //             child: Container(
+              //               alignment:
+              //               Alignment
+              //                   .center,
+              //               height: 20,
+              //               decoration: BoxDecoration(
+              //                   borderRadius:
+              //                   BorderRadius
+              //                       .circular(
+              //                       10),
+              //                   color: (yourTime < (adminTime - 1500) || yourTime > (adminTime + 2000))
+              //                       ? Colors
+              //                       .orange
+              //                       : red),
+              //               child: Padding(
+              //                 padding: EdgeInsets
+              //                     .symmetric(
+              //                     horizontal:
+              //                     10),
+              //                 child: Text(
+              //                     (yourTime < (adminTime - 1500) || yourTime > (adminTime + 2000))
+              //                         ? "Go Live"
+              //                         : "Live",
+              //                     style: size12_600W),
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     );
+              //   },
+              //
+              // ) : Container(),
+              Builder(builder: (context) => // Ensure Scaffold is in context
+
+              ValueListenableBuilder(
+                valueListenable: _notifier,
+                builder: (BuildContext context, bool value, Widget? child) {
+                  return   IconButton(
+                      onPressed: () {
+
+                        Scaffold.of(context).openEndDrawer();
+                        // shareBottomSheet();
+                        // PopupMenuButton(
+                        //   onSelected: (value) {
+                        //     // _onMenuItemSelected(value as int);
+                        //     print("value");
+                        //     print(value);
+                        //     if(value==0){
+                        //
+                        //     }else{
+                        //       setState(() {
+                        //
+                        //       });
+                        //     }
+                        //   },
+                        //   itemBuilder: (ctx) => [
+                        //     _buildPopupMenuItem(' Add More', Icons.add, 0),
+                        //     _buildPopupMenuItem(' Clear All', Icons.clear, 1),
+                        //     // _buildPopupMenuItem('Copy', Icons.copy, 2),
+                        //     // _buildPopupMenuItem('Exit', Icons.exit_to_app, 3),
+                        //   ],
+                        // );
+                      },
+                      icon: const Icon(
+                        Icons.more_vert,
+                        size: 22,
+                      ));
+                },
+
+              )
+
+              ),
+            ],
+
+            leading: IconButton(
+                onPressed: () {
+                  _onBackPressed();
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: Colors.white,
+                  size: 18,
+                )),
+            centerTitle: false,
+            title: GestureDetector(
+              onTap: () {
+                friendBottomInvite( context,widget.id);
+                // goLive();
+                //shareSheet();
+              },
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("#" + widget.id.toString(), style: size14_500W),
+                      w(5),
+                      const CircleAvatar(
+                        backgroundColor: grey,
+                        child: Icon(Icons.share, size: 10),
+                        radius: 10,
                       )
                     ],
                   ),
-                );
-              },
-
-            )
-            ,
-            ( widget.type == "JOIN"&&intialStart=="true"&&intialLoading==false)
-                ? ValueListenableBuilder(
-              valueListenable: _notifier,
-              builder: (BuildContext context, bool value, Widget? child) {
-                return Container(
-                  margin: EdgeInsets.only(top: 15),
-                  alignment:
-                  Alignment.topRight,
-
-                  //    color: Colors.black54,
-                  child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment
-                        .end,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          goLive();
-                        },
-                        child: Container(
-                          alignment:
-                          Alignment
-                              .center,
-                          height: 20,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius
-                                  .circular(
-                                  10),
-                              color: (yourTime < (adminTime - 1500) || yourTime > (adminTime + 2000))
-                                  ? Colors
-                                  .orange
-                                  : red),
-                          child: Padding(
-                            padding: EdgeInsets
-                                .symmetric(
-                                horizontal:
-                                10),
-                            child: Text(
-                                (yourTime < (adminTime - 1500) || yourTime > (adminTime + 2000))
-                                    ? "Go Live"
-                                    : "Live",
-                                style: size12_600W),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-
-            )
-
-
-                : Container(),
-            Builder(builder: (context) => // Ensure Scaffold is in context
-
-                ValueListenableBuilder(
-                  valueListenable: _notifier,
-                  builder: (BuildContext context, bool value, Widget? child) {
-                    return   IconButton(
-                        onPressed: () {
-
-                          Scaffold.of(context).openEndDrawer();
-                          // shareBottomSheet();
-                          // PopupMenuButton(
-                          //   onSelected: (value) {
-                          //     // _onMenuItemSelected(value as int);
-                          //     print("value");
-                          //     print(value);
-                          //     if(value==0){
-                          //
-                          //     }else{
-                          //       setState(() {
-                          //
-                          //       });
-                          //     }
-                          //   },
-                          //   itemBuilder: (ctx) => [
-                          //     _buildPopupMenuItem(' Add More', Icons.add, 0),
-                          //     _buildPopupMenuItem(' Clear All', Icons.clear, 1),
-                          //     // _buildPopupMenuItem('Copy', Icons.copy, 2),
-                          //     // _buildPopupMenuItem('Exit', Icons.exit_to_app, 3),
-                          //   ],
-                          // );
-                        },
-                        icon: const Icon(
-                          Icons.more_vert,
-                          size: 22,
-                        ));
-                  },
-
-                )
-
-            ),
-          ],
-
-          leading: IconButton(
-              onPressed: () {
-                _onBackPressed();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_outlined,
-                color: Colors.white,
-                size: 18,
-              )),
-          centerTitle: false,
-          title: GestureDetector(
-            onTap: () {
-              friendBottomInvite( context,widget.id);
-              // goLive();
-              //shareSheet();
-            },
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text("#" + widget.id.toString(), style: size14_500W),
-                    w(5),
-                    const CircleAvatar(
-                      backgroundColor: grey,
-                      child: Icon(Icons.share, size: 10),
-                      radius: 10,
-                    )
-                  ],
                 ),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: const Color(0xff2B2B2B)),
               ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: const Color(0xff2B2B2B)),
             ),
           ),
-        ),
-        bottomNavigationBar:  ValueListenableBuilder(
-          valueListenable: _notifier,
-          builder: (BuildContext context, bool value, Widget? child) {
-            return Container(
-              color: liteBlack,
-              height: chatlistTap == true?7:50,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: (Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          bottomNavigationBar:  ValueListenableBuilder(
+            valueListenable: _notifier,
+            builder: (BuildContext context, bool value, Widget? child) {
+              return Container(
+                color: liteBlack,
+                height: chatlistTap == true?7:50,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: (Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // IconButton(
+                      //     onPressed:(widget.type=="JOIN"&&intialStart=="false")?null: () {
+                      //       playlistBottomSheet(height);
+                      //
+                      //       _notifier.value = !_notifier.value;
+                      //     },
+                      //     icon: Icon(CupertinoIcons.line_horizontal_3,
+                      //         color:
+                      //         playlistTap == true ? themeClr : Colors.white)),
+                      BannerAdsMusStr(),
+                      // IconButton(
+                      //     onPressed: () {
+                      //       chatBottomSheet(width);
+                      //       _notifier.value = !_notifier.value;
+                      //       // chatBottomSheet();
+                      //     },
+                      //     icon: Icon(Icons.chat,
+                      //         color:
+                      //         chatlistTap == true ? themeClr : Colors.white,
+                      //         size: 20)),
+                    ],
+                  )),
+                ),
+              );
+            },
+
+          ),
+
+          body:
+          intialLoading==true?   ValueListenableBuilder(
+            valueListenable: _notifier,
+            builder: (BuildContext context, bool value, Widget? child) {
+              return  Container(
+                color: Color(0xff2B2B2B),
+                child: Column(
                   children: [
-                    IconButton(
-                        onPressed:(widget.type=="JOIN"&&intialStart=="false")?null: () {
-                          playlistBottomSheet(height);
+                    musicAddStarted==true? Container(
+                      height: 25,
+                      decoration: BoxDecoration(
 
-                          _notifier.value = !_notifier.value;
-                        },
-                        icon: Icon(CupertinoIcons.line_horizontal_3,
-                            color:
-                            playlistTap == true ? themeClr : Colors.white)),
-                    BannerAdsMusStr(),
-                    IconButton(
-                        onPressed: () {
-                          chatBottomSheet(width);
-                          _notifier.value = !_notifier.value;
-                          // chatBottomSheet();
-                        },
-                        icon: Icon(Icons.chat,
-                            color:
-                            chatlistTap == true ? themeClr : Colors.white,
-                            size: 20)),
-                  ],
-                )),
-              ),
-            );
-          },
+                          color: themeClr),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:  [
 
-        ),
-
-        body:
-        intialLoading==true?   ValueListenableBuilder(
-          valueListenable: _notifier,
-          builder: (BuildContext context, bool value, Widget? child) {
-            return  Container(
-              color: Color(0xff2B2B2B),
-              child: Column(
-                children: [
-                  musicAddStarted==true? Container(
-                    height: 25,
-                    decoration: BoxDecoration(
-
-                        color: themeClr),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:  [
-
-                        Text("Fetching playlist " + musicAddCount.toString()+" / "+playList.length.toString(), style: size13_600W)
-                      ],
-                    ),
-                  ):Container(),
-                  MusicLoading(height: (ss.height),),
-                ],
-              ),
-            );
-          },
-
-        )
-
-            :( intialStart == 'false' ?  ValueListenableBuilder(
-          valueListenable: _notifier,
-          builder: (BuildContext context, bool value, Widget? child) {
-            return  Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                BannerAdsMusStr(),
-
-                SizedBox(height: 5),
-                Row(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.center,
-                  mainAxisAlignment:
-                  MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-
-                    // w(5),
-                    //  CircleAvatar(
-                    //   backgroundColor: grey,
-                    //   child: Icon(Icons.copy, size: 10),
-                    //   radius: 10,
-                    // )
+                          Text("Fetching playlist " + musicAddCount.toString()+" / "+playList.length.toString(), style: size13_600W)
+                        ],
+                      ),
+                    ):Container(),
+                    MusicLoading(height: (ss.height),),
                   ],
                 ),
-                SizedBox(height: 5),
+              );
+            },
 
-                // h(ss.height * 0.03),
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: AspectRatio(
-                      aspectRatio: 1,
-                      child:  Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius:
-                          BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: widget.type == "JOIN"
-                              ? Container(
-                            child: Text(
-                              "Creator havent start the stream!",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10),
+          )
+
+              :( intialStart == 'false' ?  ValueListenableBuilder(
+            valueListenable: _notifier,
+            builder: (BuildContext context, bool value, Widget? child) {
+              return  Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  BannerAdsMusStr(),
+
+                  SizedBox(height: 5),
+                  Row(
+                    crossAxisAlignment:
+                    CrossAxisAlignment.center,
+                    mainAxisAlignment:
+                    MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+
+                      // w(5),
+                      //  CircleAvatar(
+                      //   backgroundColor: grey,
+                      //   child: Icon(Icons.copy, size: 10),
+                      //   radius: 10,
+                      // )
+                    ],
+                  ),
+                  SizedBox(height: 5),
+
+                  // h(ss.height * 0.03),
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: AspectRatio(
+                        aspectRatio: 1,
+                        child:  Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius:
+                            BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: widget.type == "JOIN"
+                                ? Container(
+                              child: Text(
+                                "Creator havent start the stream!",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10),
+                              ),
+                            )
+                                : GestureDetector(
+                              onTap: () {
+                                updateTime();
+                                // player.play();
+                                // _handleEvent("play");
+                                setState(() {
+                                  intialStart = "true";
+                                  musicPlaying = true;
+                                });
+
+                                databaseReference
+                                    .child('channel')
+                                    .child(widget.id)
+                                    .update({
+                                  'intialStart':
+                                  true.toString(),
+                                  //'controller': "play",
+                                });
+                              },
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment
+                                    .center,
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .center,
+                                children: [
+                                  Container(
+                                    alignment:
+                                    Alignment.center,
+                                    height: 40,
+                                    width: 180,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius
+                                            .circular(
+                                            30),
+                                        color: themeClr),
+                                    child: const Padding(
+                                      padding: EdgeInsets
+                                          .symmetric(
+                                          horizontal:
+                                          10),
+                                      child: Text("Start",
+                                          style:
+                                          size12_200W),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Before starting the session \n make sure everyone has joined !",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12),
+                                    textAlign:
+                                    TextAlign.center,
+                                  )
+                                ],
+                              ),
                             ),
-                          )
-                              : GestureDetector(
-                            onTap: () {
-                              updateTime();
-                              // player.play();
-                              // _handleEvent("play");
-                              setState(() {
-                                intialStart = "true";
-                                musicPlaying = true;
-                              });
+                          ),
+                        )
 
-                              databaseReference
-                                  .child('channel')
-                                  .child(widget.id)
-                                  .update({
-                                'intialStart':
-                                true.toString(),
-                                //'controller': "play",
-                              });
-                            },
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .center,
-                              mainAxisAlignment:
-                              MainAxisAlignment
-                                  .center,
-                              children: [
-                                Container(
+
+
+
+
+                    ),
+                  ),
+
+                  // h(ss.height * 0.05),
+
+                ],
+              );
+            },
+
+          )
+              :
+          Column(
+            //  key: Key('builder ${restartPage.toString()}'), //
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 5,),
+              Row(
+                children: [
+                  Container(
+                    width: 100,
+                  ),
+                  Spacer(),
+                  Container(
+                      height: null,
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 2),
+                          Text("Playing from", style: size14_500W),
+                          Text("Room #" + widget.id.toString(),
+                              style: size14_600W),
+
+
+                          SizedBox(height: 10),
+                          // Text("Game of Thrones", style: size14_600W),
+                        ],
+                      )),
+                  Spacer(),
+
+                  ( widget.type == "JOIN"&&intialStart=="true"&&intialLoading==false)
+                      ? ValueListenableBuilder(
+                    valueListenable: _notifier,
+                    builder: (BuildContext context, bool value, Widget? child) {
+                      return SizedBox(
+                        width: 100,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment
+                                .end,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  goLive();
+                                },
+                                child: Container(
                                   alignment:
-                                  Alignment.center,
-                                  height: 40,
-                                  width: 180,
+                                  Alignment
+                                      .center,
+                                  height: 20,
                                   decoration: BoxDecoration(
                                       borderRadius:
                                       BorderRadius
                                           .circular(
-                                          30),
-                                      color: themeClr),
-                                  child: const Padding(
+                                          10),
+                                      color: (yourTime < (adminTime - 1500) || yourTime > (adminTime + 2000))
+                                          ? Colors
+                                          .orange
+                                          : red),
+                                  child: Padding(
                                     padding: EdgeInsets
                                         .symmetric(
                                         horizontal:
                                         10),
-                                    child: Text("Start",
-                                        style:
-                                        size12_200W),
+                                    child: Text(
+                                        (yourTime < (adminTime - 1500) || yourTime > (adminTime + 2000))
+                                            ? "Go Live"
+                                            : "Live",
+                                        style: size12_600W),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Before starting the session \n make sure everyone has joined !",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12),
-                                  textAlign:
-                                  TextAlign.center,
-                                )
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      )
+                      );
+                    },
 
+                  ) : Container( width: 100,),
+                ],
+              ),
+              audioPlayerStreamWidget(audioPlayer:player,playlist:_playlist,autoPlay: false,id:widget.id,seekListener:seekListener,diffIndexPlaying:diffIndexPlaying, type: widget.type,),
+              // Row(
+              //   children: [
+              //     IconButton(
+              //         onPressed:(widget.type=="JOIN"&&intialStart=="false")?null: () {
+              //           playlistBottomSheet(height);
+              //
+              //           _notifier.value = !_notifier.value;
+              //         },
+              //         icon: Icon(CupertinoIcons.music_note_2,
+              //             color:
+              //             playlistTap == true ? themeClr : Colors.white)),
+              //     Spacer(),
+              //
+              //
+              //     IconButton(
+              //         onPressed: () {
+              //           chatBottomSheet(width);
+              //           _notifier.value = !_notifier.value;
+              //           // chatBottomSheet();
+              //         },
+              //         icon: Icon(CupertinoIcons.bubble_left,
+              //             color:
+              //             chatlistTap == true ? themeClr : Colors.white,
+              //             size: 20)),
+              //
+              //   ],
+              // ),
+            ],
+          )
+              //)
 
-
-
-
-                  ),
-                ),
-
-                // h(ss.height * 0.05),
-
-              ],
-            );
-          },
-
-        )
-       :
-        Column(
-        //  key: Key('builder ${restartPage.toString()}'), //
-          children: [
-            audioPlayerStreamWidget(audioPlayer:player,playlist:_playlist,autoPlay: false,id:widget.id,seekListener:seekListener,diffIndexPlaying:diffIndexPlaying, type: widget.type,),
-
-          ],
-        )
-        //)
-
-      ),
-    ));
+          ),
+        ));
   }
 
   // MusicList(var item, int index) {
@@ -2382,7 +2538,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
                     margin: EdgeInsets.only(left: 7,right: 5,top:15),
                     child: Row(
                       children:  [
-                        Text('Playlist ('+_playlistBackup.length.toString()+' Songs)', style: size14_600W),
+                        Text('Playlist', style: size14_600W),
                         Spacer(),
                         GestureDetector(
                           onTap: (){
@@ -2418,7 +2574,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
 
   chatBottomSheet(width) {
-  showModalBottomSheet(
+    showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (context) {
@@ -2444,7 +2600,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
                             child: Row(
                               children: [
 
-                                 Spacer(),
+                                Spacer(),
                                 IconButton(
                                     icon: const Icon(
                                       CupertinoIcons.fullscreen_exit,
@@ -2458,7 +2614,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
                           ),
                         ),
                         BannerAdsVidStr(),
-                      //  const Divider(color: Color(0xff404040), thickness: 1),
+                        //  const Divider(color: Color(0xff404040), thickness: 1),
                         sessionChatList(code: widget.id,voiceNotePlayingListner: voiceNotePlayingListner,),
 
                         Padding(
@@ -2547,7 +2703,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
                   children: [
                     Row(
                       children:  [
-                        Text("*LEAVE APP IN FORGROUND WHILE LOCKING THE SCREEN !*", style: size14_600W),
+                        Text("*LEAVE APP IN FORGROUND \n WHILE LOCKING THE SCREEN !*", style: size14_600W),
                         Spacer(),
 
                       ],

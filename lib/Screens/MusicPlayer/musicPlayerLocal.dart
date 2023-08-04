@@ -54,7 +54,7 @@ void main() async {
   await setupAudio();
 
   runApp(
-       audioPlayerLocal()
+      audioPlayerLocal()
   );
   // runApp(const MyApp());
 }
@@ -173,12 +173,12 @@ class _audioPlayerScreenState extends State<audioPlayerLocal> {
     print(widget.id);
 
     getPlayList(widget.path);
-   // timer = Timer.periodic(Duration(minutes: 1), (Timer t) =>   refreshPlayList());
+    // timer = Timer.periodic(Duration(minutes: 1), (Timer t) =>   refreshPlayList());
     super.initState();
   }
 
   void getPlayList(_path)async{
-   // await setupAudio();
+    // await setupAudio();
     if(_path==null){
       setState(() {
         playList=widget.data;
@@ -209,14 +209,14 @@ class _audioPlayerScreenState extends State<audioPlayerLocal> {
 
   }
   fetchUrl()async{
-   // _audioPlayer.player.dispose();
-     setState(() {
-       musicAddStarted=true;
-      });
+    // _audioPlayer.player.dispose();
+    setState(() {
+      musicAddStarted=true;
+    });
     for (var i = 0; i < playList.length; i++) {
       var link;
 
-       link = await getSong(playList[i]['fileUrl'].toString(),playList[i]['fileType'].toString());
+      link = await getSong(playList[i]['fileUrl'].toString(),playList[i]['fileType'].toString());
       final exists = await safeUrlCheck(
         Uri.parse(link),
         //  userAgent: 'myexample/1.0.0 (+https://example.com)',
@@ -227,7 +227,7 @@ class _audioPlayerScreenState extends State<audioPlayerLocal> {
       }else{
         print('The url: https://google.com is  broken');
 
-        link = await getSong(playList[currentIndex]['fileUrl'].toString(),playList[currentIndex]['fileType'].toString());
+        link = await getSong(playList[i]['fileUrl'].toString(),playList[i]['fileType'].toString());
 
       }
       setState(() {
@@ -259,14 +259,14 @@ class _audioPlayerScreenState extends State<audioPlayerLocal> {
     }
     // _audioPlayer.playAudios(_playlist);
 
-     //  _audioPlayer.player.setAudioSource(_playlist);
-     setState(() {
-       musicAddStarted=false;
-       intialLoading=false;
-       listenAudio();
-     //  _audioPlayer.play();
+    //  _audioPlayer.player.setAudioSource(_playlist);
+    setState(() {
+      musicAddStarted=false;
+      intialLoading=false;
+      listenAudio();
+      //  _audioPlayer.play();
 
-     });
+    });
   }
   listenAudio(){
 
@@ -278,7 +278,7 @@ class _audioPlayerScreenState extends State<audioPlayerLocal> {
       // setState(() {
       //   currentIndex =index;
       // });
-     // updateUrl(index);
+      // updateUrl(index);
 
     });
 
@@ -339,7 +339,7 @@ class _audioPlayerScreenState extends State<audioPlayerLocal> {
 
 
     });
-   // _audioPlayer.player.dispose();
+    // _audioPlayer.player.dispose();
     super.dispose();
   }
 
@@ -348,25 +348,25 @@ class _audioPlayerScreenState extends State<audioPlayerLocal> {
     bool goBack = false;
 
 
-  print("exitt");
+    print("exitt");
     exitSheet();
-  //   if(chatlistTap==true){
-  //     setState(() {
-  //       chatlistTap=false;
-  //     });
-  //
-  //     return goBack;
-  //   }
-  //
-  //
-  //   if(playlistTap==true){
-  //     setState(() {
-  //       playlistTap=false;
-  //     });
-  //
-  //     return goBack;
-  //   }
-  //   Navigator.pop(context);
+    //   if(chatlistTap==true){
+    //     setState(() {
+    //       chatlistTap=false;
+    //     });
+    //
+    //     return goBack;
+    //   }
+    //
+    //
+    //   if(playlistTap==true){
+    //     setState(() {
+    //       playlistTap=false;
+    //     });
+    //
+    //     return goBack;
+    //   }
+    //   Navigator.pop(context);
     return goBack;
   }
 
@@ -507,7 +507,7 @@ class _audioPlayerScreenState extends State<audioPlayerLocal> {
 
         bottomNavigationBar: Container(
           color: bgClr,
-          height: 50,
+          //  height: 50,
           child:  BannerAdsMus(),
         ),
         body:  intialLoading==true?Container(

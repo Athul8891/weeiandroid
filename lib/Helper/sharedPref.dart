@@ -25,6 +25,11 @@ final SHOWAD = "weeiShowAd";
 final CURRENTVERSION = "weeiCurrentVersion";
 final APLOGY = "apologyShown";
 
+final STARTALERTSHOW = "startAlert";
+final STARTALERTDISSMISS = "startAlertDissmiss";
+final STARTALERT_TXT = "startAlertText";
+final STARTALERT_TITLE = "startAlertTile";
+
 final MANDATORY = "weeiMANDI";
 final BUILDVERSION = "weeiBUILId";
 final UPDATETEXT = "weeiUpadteText";

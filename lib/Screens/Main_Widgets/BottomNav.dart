@@ -40,7 +40,7 @@ class _BottomNavState extends State<BottomNav> {
   final GlobalKey _bottomNavigationKey = GlobalKey();
 
   final List<Widget> viewContainer = [
-  //  ChatScreen(),
+    //  ChatScreen(),
 
     const Session_Home(),
 
@@ -55,9 +55,17 @@ class _BottomNavState extends State<BottomNav> {
     if( uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"){
       return;
     }
+
+
+
     var aplogy = await getSharedPrefrence(APLOGY);
-    if(aplogy!="true"){
-      apologySheet();
+    var alertShow = await getSharedPrefrence(STARTALERTSHOW);
+    var alertDiss = await getSharedPrefrence(STARTALERTDISSMISS);
+    var alertTxt = await getSharedPrefrence(STARTALERT_TXT);
+    var alertTitle = await getSharedPrefrence(STARTALERT_TITLE);
+
+    if(aplogy!="true"||alertShow=='true'){
+      apologySheet(alertDiss,alertTxt,alertTitle);
     }
   }
 
@@ -85,7 +93,7 @@ class _BottomNavState extends State<BottomNav> {
 
 
 
- getVersion() async {
+  getVersion() async {
 
     var version = await getSharedPrefrence(CURRENTVERSION);
     var txt = await getSharedPrefrence(UPDATETEXT);
@@ -211,7 +219,7 @@ class _BottomNavState extends State<BottomNav> {
           });
         });
   }
-  apologySheet()async {
+  apologySheet(alertDiss,alertTxt,alertTitle)async {
     var set= await setSharedPrefrence(APLOGY,"true");
     return showModalBottomSheet(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -219,71 +227,76 @@ class _BottomNavState extends State<BottomNav> {
         context: context,
         // enableDrag:mandatory=='true'? false:true,
         // isDismissible:mandatory=='true'? false:true,
+        enableDrag:alertDiss=='true'? true:false,
+        isDismissible:alertDiss=='true'? true:false,
         isScrollControlled: true,
         builder: (context) {
-          return StatefulBuilder(builder: (BuildContext context,
-              StateSetter setState /*You can rename this!*/) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: Container(
-                // decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(20), color: liteBlack),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children:  [
-                        Text("Welcome , Sorry for the AD's", style: size14_600W),
-                        Spacer(),
+          return WillPopScope(
+            onWillPop: () async => alertDiss=='true'? true:false,
+            child: StatefulBuilder(builder: (BuildContext context,
+                StateSetter setState /*You can rename this!*/) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                child: Container(
+                  // decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(20), color: liteBlack),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children:  [
+                          Text(alertTitle.toString().isEmpty?"Welcome , Sorry for the AD's":alertTitle, style: size14_600W),
+                          Spacer(),
 
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Divider(color: Color(0xff404040), thickness: 1),
-                    ),
-                    Text("Currently we're in a struggling stage as a startup company, to run the system ad revenue is used. We are trying to improve and remove AD's in upcomimg updates. \n If we some how interrupt your user experience  *APOLOGIES*", style: size14_500Grey),
-                    h(25),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: buttons("Close", themeClr, ()async {
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Divider(color: Color(0xff404040), thickness: 1),
+                      ),
+                      Text(alertTxt.toString().isEmpty?"Currently we're in a struggling stage as a startup company, to run the system ad revenue is used. We are trying to improve and remove AD's in upcomimg updates. \n If we some how interrupt your user experience  *APOLOGIES*":alertTxt, style: size14_500Grey),
+                      h(25),
+                      Row(
+                        children: [
+                          alertDiss=='true'?Expanded(
+                            child: buttons("Close", themeClr, ()async {
 
                               Navigator.pop(context);
-                            // if (Platform.isAndroid) {
-                            //   // Android-specific code
-                            //   // final Uri _url = Uri.parse(ANDROIDURL);
-                            //   //
-                            //   // if (!await launchUrl(_url)) {
-                            //   //   throw Exception('Could not launch $_url');
-                            //   // }
-                            //
-                            //
-                            // } else if (Platform.isIOS) {
-                            //   // iOS-specific code
-                            //   final Uri _url = Uri.parse(IOSURL);
-                            //
-                            //   if (!await launchUrl(_url)) {
-                            //     throw Exception('Could not launch $_url');
-                            //   }
-                            // }
+                              // if (Platform.isAndroid) {
+                              //   // Android-specific code
+                              //   // final Uri _url = Uri.parse(ANDROIDURL);
+                              //   //
+                              //   // if (!await launchUrl(_url)) {
+                              //   //   throw Exception('Could not launch $_url');
+                              //   // }
+                              //
+                              //
+                              // } else if (Platform.isIOS) {
+                              //   // iOS-specific code
+                              //   final Uri _url = Uri.parse(IOSURL);
+                              //
+                              //   if (!await launchUrl(_url)) {
+                              //     throw Exception('Could not launch $_url');
+                              //   }
+                              // }
 
-                          }
+                            }
 
-                          ),
-                        ),
-
-
+                            ),
+                          ):Container(),
 
 
-                      ],
-                    )
-                  ],
+
+
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            );
-          });
+              );
+            }),
+          );
         });
   }
   newUpdateSheet(mandatory,txt,build) {
@@ -319,7 +332,7 @@ class _BottomNavState extends State<BottomNav> {
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Divider(color: Color(0xff404040), thickness: 1),
                       ),
-                       Text(txt, style: size14_500Grey),
+                      Text(txt, style: size14_500Grey),
                       h(25),
                       Row(
                         children: [

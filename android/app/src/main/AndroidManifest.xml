@@ -101,10 +101,10 @@
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
 
                 android:value="you_can_name_it_whatever1"/>
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
             <intent-filter>
 
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />

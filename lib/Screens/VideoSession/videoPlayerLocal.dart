@@ -12,6 +12,7 @@ import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:better_player/better_player.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../../Helper/cofirmExitAlert.dart';
+import 'package:safe_url_check/safe_url_check.dart';
 
 import 'package:flutter/material.dart';
 import 'package:weei/Helper/Loading.dart';
@@ -131,7 +132,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
 
 
 
-   getPlayList(widget.path);
+    getPlayList(widget.path);
     // this.listenDataFromFireBase();
     // this.listenExit();
     //
@@ -142,7 +143,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
     //     .reference()
     //     .child('channel').child(widget.id.toString()+"/chat");
 
-   // _controller.addListener(_scrollListener);
+    // _controller.addListener(_scrollListener);
     super.initState();
   }
 
@@ -164,42 +165,58 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
   }
 
   void getPlayList(_path)async{
-      print("widget.data");
-      print(widget.data);
-        if(_path==null){
-            setState(() {
-              playList=widget.data;
-            });
-
-            updateUrl(widget.index!=null?widget.index:0);
-
-        }else{
-    databaseReference.child(_path).once().then(( snapshot) async {
-            var data = snapshot.snapshot.value;
-             setState(() {
-               playList=data;
-
-             });
-
-
-
-          }).whenComplete((){
-
+    print("widget.data");
+    print(widget.data);
+    if(_path==null){
+      setState(() {
+        playList=widget.data;
+      });
 
       updateUrl(widget.index!=null?widget.index:0);
 
+    }else{
+      databaseReference.child(_path).once().then(( snapshot) async {
+        var data = snapshot.snapshot.value;
+        setState(() {
+          playList=data;
+
+        });
 
 
-           //  setUpChannel("playList[0][0]['fileUrl']");
-         });
-        }
+
+      }).whenComplete((){
+
+
+        updateUrl(widget.index!=null?widget.index:0);
+
+
+
+        //  setUpChannel("playList[0][0]['fileUrl']");
+      });
+    }
 
   }
 
   void updateUrl(index)async{
-    var _url = await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
 
 
+    var _url;
+
+    _url = await await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
+    final exists = await safeUrlCheck(
+      Uri.parse(_url),
+      //  userAgent: 'myexample/1.0.0 (+https://example.com)',
+    );
+    if (exists) {
+      _url = _url;
+      print('The url: https://google.com is NOT broken');
+    }else{
+      print('The url: https://google.com is  broken');
+
+      _url = await await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
+
+
+    }
     setState(() {
       url=_url;
       currentIndex=index;
@@ -219,7 +236,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
       currentIndex=index;
       _betterPlayerController.dispose();
 
-   //   _betterPlayerController. pause();
+      //   _betterPlayerController. pause();
       videoInitilize();
 
     });
@@ -249,18 +266,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
     _betterPlayerController.setupDataSource(dataSource);
     _betterPlayerController.addEventsListener(_handleEvent);
     // _betterPlayerController.pause();
-   // _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
+    // _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
 
     setState(() {
       loading=false;
-    //  videoAspectRatitio =_betterPlayerController.videoPlayerController?.value.aspectRatio;
+      //  videoAspectRatitio =_betterPlayerController.videoPlayerController?.value.aspectRatio;
       itemLoading=false;
       _autoPlay=false;
     });
 
 
   }
-  
+
 
 
 
@@ -279,7 +296,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
       }
       if(control=="pause"){
         setState(() {
-           playlingStatus ="pause";
+          playlingStatus ="pause";
           _betterPlayerController. videoPlayerController?.pause();
         });
 
@@ -354,9 +371,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
       // databaseReference.child('channel').child(widget.id).update({
       //   'controller': event.toString(),
       // });
-       setState(() {
-         videoFulscreen=true;
-       });
+      setState(() {
+        videoFulscreen=true;
+      });
     }
     if(event=="hideFullscreen"){
       // databaseReference.child('channel').child(widget.id).update({
@@ -375,25 +392,25 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
 
   void goLive(){
 
-          print("adminnnn");
-          print(adminTime);
+    print("adminnnn");
+    print(adminTime);
 
-        _betterPlayerController. videoPlayerController?.pause();
-      //+(bufferTime)
-        _betterPlayerController.seekTo(Duration(milliseconds: (int.parse(adminTime.toString())))).whenComplete(() {
-        setState(() {
-          if(playlingStatus=="play"){
-            _betterPlayerController. videoPlayerController?.play();
-          }
+    _betterPlayerController. videoPlayerController?.pause();
+    //+(bufferTime)
+    _betterPlayerController.seekTo(Duration(milliseconds: (int.parse(adminTime.toString())))).whenComplete(() {
+      setState(() {
+        if(playlingStatus=="play"){
+          _betterPlayerController. videoPlayerController?.play();
+        }
 
-          // stopwatch.stop();
-         // bufferTime=stopwatch.elapsed.inMilliseconds;
-         // print('doSomething() executed in ${}');
-         // stopwatch.reset();
-
-        });
+        // stopwatch.stop();
+        // bufferTime=stopwatch.elapsed.inMilliseconds;
+        // print('doSomething() executed in ${}');
+        // stopwatch.reset();
 
       });
+
+    });
 
 
 
@@ -449,9 +466,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
 
 
 
-   // if(current!<=yourTime){
-   //  // _betterPlayerController.seekTo(Duration(milliseconds: (int.parse(time.toString()))));
-   // }
+    // if(current!<=yourTime){
+    //  // _betterPlayerController.seekTo(Duration(milliseconds: (int.parse(time.toString()))));
+    // }
     print("eventttttttt");
     print(event.betterPlayerEventType.name);
     // event.betterPlayerEventType == BetterPlayerEventType.progress &&
@@ -494,7 +511,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
     //
     // }
 
-    Navigator.pop(context);
+    //Navigator.pop(context);
     return goBack;
   }
   @override
@@ -505,11 +522,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
       onWillPop: _onBackPressed,
 
 
-    child: Scaffold(
-      backgroundColor: (videoFulscreen==true)?Colors.black:Color(0xff1e1e1e),
-      bottomNavigationBar: (videoFulscreen==true)?SizedBox(height: 0.1,):BannerAdsVid(),
-  //    bottomNavigationBar: BannerAds(),
-      //  endDrawer: VideoDrawerWidget(type: widget.type,id: widget.id,uid: auth.currentUser!.uid,controller: navigationListner,private: private,disableComment:chatAlert,disableJoinAlert:joinAlert,disableAdminControls:creatorControl,controlJoins:controlJoined,),
+      child: Scaffold(
+        backgroundColor: (videoFulscreen==true)?Colors.black:Color(0xff1e1e1e),
+        bottomNavigationBar: (videoFulscreen==true)?SizedBox(height: 0.1,):BannerAdsVid(),
+        //    bottomNavigationBar: BannerAds(),
+        //  endDrawer: VideoDrawerWidget(type: widget.type,id: widget.id,uid: auth.currentUser!.uid,controller: navigationListner,private: private,disableComment:chatAlert,disableJoinAlert:joinAlert,disableAdminControls:creatorControl,controlJoins:controlJoined,),
         appBar:   (videoFulscreen==true)?PreferredSize(
             preferredSize: Size.fromHeight(0.0), child: AppBar()):AppBar(
           key: _scaffoldKey,
@@ -534,7 +551,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                     Expanded(child: Text(loading==false?playList[currentIndex]['fileName']:"", style: size14_500W)),
+                    Expanded(child: Text(loading==false?playList[currentIndex]['fileName']:"", style: size14_500W)),
                     // w(5),
                     // const CircleAvatar(
                     //   backgroundColor: grey,
@@ -560,43 +577,43 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
             //       Icons.live_tv,
             //     )),
 
-           //
-           // IconButton(
-           //      onPressed: () {
-           //
-           //        // if(seesionJoins==true){
-           //        //   setState(() {
-           //        //     seesionJoins=false;
-           //        //   });
-           //        // }else{
-           //        //   setState(() {
-           //        //     seesionJoins=true;
-           //        //   });
-           //        // }
-           //
-           //
-           //       joinBottomSheet();
-           //      },
-           //      icon: const Icon(CupertinoIcons.person_3, color: Colors.white)),
-           //  IconButton(
-           //      onPressed: () {
-           //     // requestBottomSheet();
-           //
-           //        if(playlistTap==true){
-           //          setState(() {
-           //            playlistTap=false;
-           //          });
-           //        }else{
-           //          setState(() {
-           //            playlistTap=true;
-           //          });
-           //        }
-           //
-           //       // readData();
-           //      },
-           //      icon:  Icon(
-           //        playlistTap==false? Icons.menu:CupertinoIcons.bubble_left_bubble_right ,  size:  playlistTap==false?22:22,
-           //      )),
+            //
+            // IconButton(
+            //      onPressed: () {
+            //
+            //        // if(seesionJoins==true){
+            //        //   setState(() {
+            //        //     seesionJoins=false;
+            //        //   });
+            //        // }else{
+            //        //   setState(() {
+            //        //     seesionJoins=true;
+            //        //   });
+            //        // }
+            //
+            //
+            //       joinBottomSheet();
+            //      },
+            //      icon: const Icon(CupertinoIcons.person_3, color: Colors.white)),
+            //  IconButton(
+            //      onPressed: () {
+            //     // requestBottomSheet();
+            //
+            //        if(playlistTap==true){
+            //          setState(() {
+            //            playlistTap=false;
+            //          });
+            //        }else{
+            //          setState(() {
+            //            playlistTap=true;
+            //          });
+            //        }
+            //
+            //       // readData();
+            //      },
+            //      icon:  Icon(
+            //        playlistTap==false? Icons.menu:CupertinoIcons.bubble_left_bubble_right ,  size:  playlistTap==false?22:22,
+            //      )),
 
             Builder(builder: (context) => // Ensure Scaffold is in context
             PopupMenuButton(
@@ -696,8 +713,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
                   Container(
 
                     //aspectRatio: videoFulscreen==false ?16 / 9:16 / 7.5,
-                     height:  videoFulscreen==false?(height/4):(height-5),
-                      width: width,
+                    height:  videoFulscreen==false?(height/4):(height-5),
+                    width: width,
                     // aspectRatio: _betterPlayerController.videoPlayerController?.value.aspectRatio,
                     // aspectRatio:  _betterPlayerController.videoPlayerController?.value.initialized==true?videoAspectRatitio:14 / 9,
 
@@ -951,9 +968,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
                     onTap: ()async{
                       print("lengthh");
                       print(chatList);
-                    //  FocusManager.instance.primaryFocus?.unfocus();
+                      //  FocusManager.instance.primaryFocus?.unfocus();
 
-                     // sendMessageInSesssion(widget.id,messageController.text,"TEXT");
+                      // sendMessageInSesssion(widget.id,messageController.text,"TEXT");
                       setState(() {
 
 
@@ -1065,9 +1082,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
               ),
             ),
             w(10),
-             Text(auth.currentUser!.uid==item['uid']?"You":item['name'].toString(), style: size14_600W),
+            Text(auth.currentUser!.uid==item['uid']?"You":item['name'].toString(), style: size14_600W),
             w(8),
-             Text("• " + item['time'].toString(), style: size12_400grey)
+            Text("• " + item['time'].toString(), style: size12_400grey)
           ],
         ),
         h(10),
@@ -1128,7 +1145,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
                   child: Scrollbar(
                     child: FirebaseAnimatedList(
                       query: _ref,
-                     // reverse: true,
+                      // reverse: true,
                       itemBuilder: (BuildContext context, DataSnapshot snapshot,
                           Animation<double> animation, int index) {
                         // Object? contact = snapshot.value;
@@ -1233,7 +1250,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
               item['status'].toString()=="false"?accepted("Accept"):   item['status'].toString()=="exit"?rejected("Exited"):auth.currentUser!.uid==item['uid']?Text("Creator", style: size14_600Gold): Text("Remove", style: size14_600Red)
             ],
           ),
-         SizedBox(height: 10,)
+          SizedBox(height: 10,)
         ],
       ),
     ):GestureDetector(
@@ -1327,18 +1344,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
           return;
         }
 
-      if(widget.type=="CREATE"&&itemLoading==false){
+        if(widget.type=="CREATE"&&itemLoading==false){
 
-     // updateUrl(index);
+          // updateUrl(index);
 
-       setState(() {
-         _betterPlayerController.pause();
-         currentIndex=index;
-         itemLoading=true;
-       });
-     //setControls("next");
-     playNext(index,ctx);
-   }
+          setState(() {
+            _betterPlayerController.pause();
+            currentIndex=index;
+            itemLoading=true;
+          });
+          //setControls("next");
+          playNext(index,ctx);
+        }
       },
       child: Container(
         color: currentIndex==index?grey:Color(0xff1e1e1e),
@@ -1402,57 +1419,57 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
         context: context,
         isScrollControlled: true,
         builder: (context) => Stack(children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(20.0)),
-                      ),
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Row(
-                          children: [
-                            const Text("Share", style: size14_500W),
-                            const Spacer(),
-                            IconButton(
-                                icon: const Icon(
-                                  CupertinoIcons.clear_circled_solid,
-                                  color: Color(0xff363636),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                })
-                          ],
-                        ),
-                      ),
-                    ),
-                    const Divider(color: Color(0xff404040), thickness: 1),
-                    h(10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  height: 60,
+                  decoration: const BoxDecoration(
+                    borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(20.0)),
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
                       children: [
-                        SvgPicture.asset("assets/svg/whatsapp-logo.svg"),
-                        SvgPicture.asset("assets/svg/messenger-logo.svg"),
-                        SvgPicture.asset("assets/svg/instagram-logo.svg"),
-                        SvgPicture.asset("assets/svg/sms-logo.svg"),
+                        const Text("Share", style: size14_500W),
+                        const Spacer(),
+                        IconButton(
+                            icon: const Icon(
+                              CupertinoIcons.clear_circled_solid,
+                              color: Color(0xff363636),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            })
                       ],
                     ),
-                    h(10),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom,
-                          top: 10),
-                    ),
+                  ),
+                ),
+                const Divider(color: Color(0xff404040), thickness: 1),
+                h(10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SvgPicture.asset("assets/svg/whatsapp-logo.svg"),
+                    SvgPicture.asset("assets/svg/messenger-logo.svg"),
+                    SvgPicture.asset("assets/svg/instagram-logo.svg"),
+                    SvgPicture.asset("assets/svg/sms-logo.svg"),
                   ],
                 ),
-              ),
-            ]));
+                h(10),
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                      top: 10),
+                ),
+              ],
+            ),
+          ),
+        ]));
   }
 
   emptyPlaylist() {
@@ -1557,10 +1574,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
 
                           if(selectedShare==0){
                             FlutterShare.share(
-                                title: 'Hey , i have started a media session in Weei App, Come and join',
-                                text: "Join in this "+widget.id +" ROOM ID",
-                                linkUrl: 'https://flutter.dev/',
-                               // chooserTitle: 'Example Chooser Title'
+                              title: 'Hey , i have started a media session in Weei App, Come and join',
+                              text: "Join in this "+widget.id +" ROOM ID",
+                              linkUrl: 'https://flutter.dev/',
+                              // chooserTitle: 'Example Chooser Title'
                             );
 
                           }else {

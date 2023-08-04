@@ -30,6 +30,8 @@ import 'package:weei/Screens/Main_Screens/Chat/ChatRequests.dart';
 import 'package:weei/Screens/Main_Screens/Chat/ChatScreen.dart';
 import 'package:weei/Screens/Main_Screens/Chat/blockedChats.dart';
 import 'package:weei/Testing/cheiwmusicplayer.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:weei/Widgets/miplay.dart';
 
 class Profile_Home extends StatefulWidget {
   const Profile_Home({Key? key}) : super(key: key);
@@ -49,9 +51,9 @@ class _Profile_HomeState extends State<Profile_Home> {
 
   var isLoading = true;
   var uid;
-  var createdDate;
-
-  var  email;
+  // var createdDate;
+  //
+  // var  email;
 
   var  name;
 
@@ -59,8 +61,8 @@ class _Profile_HomeState extends State<Profile_Home> {
 
   var profile;
 
-  var  profileType;
-
+  // var  profileType;
+  //
   var  purchased;
 
   var storage;
@@ -73,7 +75,7 @@ class _Profile_HomeState extends State<Profile_Home> {
   var total=0;
   var left=0;
 
- var notification = true;
+  var notification = true;
   @override
   void initState() {
 
@@ -87,16 +89,16 @@ class _Profile_HomeState extends State<Profile_Home> {
   }
   getData() async {
 
-      uid = auth.currentUser!.uid;
-      var noti = await getSharedPrefrence(NOTI);
-      print("uidd");
-      print(uid);
+    uid = auth.currentUser!.uid;
+    var noti = await getSharedPrefrence(NOTI);
+    print("uidd");
+    print(uid);
 
-      if(noti=="false"){
-        setState(() {
-          notification=false;
-        });
-      }
+    if(noti=="false"){
+      setState(() {
+        notification=false;
+      });
+    }
 
     var rsp = await databaseReference.child('Users').child(uid.toString()).once().then(( snapshot) async {
 
@@ -104,9 +106,9 @@ class _Profile_HomeState extends State<Profile_Home> {
       setState(() {
 
         data = snapshot;
-        createdDate=snapshot.snapshot.child('createdDate').value.toString();
-
-        email=snapshot.snapshot.child('email').value.toString();
+        // createdDate=snapshot.snapshot.child('createdDate').value.toString();
+        //
+        // email=snapshot.snapshot.child('email').value.toString();
 
         name=snapshot.snapshot.child('name').value.toString();
 
@@ -114,7 +116,7 @@ class _Profile_HomeState extends State<Profile_Home> {
 
         profile=snapshot.snapshot.child('profile').value.toString();
 
-        profileType=snapshot.snapshot.child('profileType').value.toString();
+        //   profileType=snapshot.snapshot.child('profileType').value.toString();
 
         purchased=snapshot.snapshot.child('purchased').value.toString();
 
@@ -123,8 +125,8 @@ class _Profile_HomeState extends State<Profile_Home> {
         used=snapshot.snapshot.child('used').value.toString();
 
 
-         print("used");
-         print(used);
+        print("used");
+        print(used);
         username=snapshot.snapshot.child('username').value.toString();
         isLoading=false;
         storageCalc();
@@ -162,13 +164,13 @@ class _Profile_HomeState extends State<Profile_Home> {
           var rsp = data.snapshot.value.toString();
 
           setState(() {
-            createdDate=rsp;
+            // createdDate=rsp;
           });
           break;
         case "email":
           var rsp = data.snapshot.value.toString();
           setState(() {
-            email=rsp.toString();
+            // email=rsp.toString();
           });
           break;
         case "name":
@@ -193,7 +195,7 @@ class _Profile_HomeState extends State<Profile_Home> {
         case "profileType":
           var rsp = data.snapshot.value.toString();
           setState(() {
-            profileType=rsp.toString();
+            // profileType=rsp.toString();
           });
           break;
 
@@ -245,8 +247,8 @@ class _Profile_HomeState extends State<Profile_Home> {
   storageCalc(){
     setState(() {
       total = (int.parse(storage.toString())+int.parse(purchased.toString()));
-    left = (int.parse(used.toString()));
-   //   left = used;
+      left = (int.parse(used.toString()));
+      //   left = used;
 
       print("left");
       print(left);
@@ -263,14 +265,14 @@ class _Profile_HomeState extends State<Profile_Home> {
         centerTitle: true,
         //title: const Text("Profile", style: size16_600W),
       ),
-      body:isLoading==true?Center(child: CircularProgressIndicator(color: themeClr,)): Padding(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               // BannerAds(),
-             // h(7),
+              // h(7),
 
               topSection(),
               h(10),
@@ -280,11 +282,11 @@ class _Profile_HomeState extends State<Profile_Home> {
                     style: size12_400grey),
 
                 trailing: CupertinoSwitch(value: notification, onChanged: (v)async {
-                     setState(() {
-                      notification=v;
+                  setState(() {
+                    notification=v;
 
-                     });
-                     var set = await setSharedPrefrence(NOTI,notification.toString());
+                  });
+                  var set = await setSharedPrefrence(NOTI,notification.toString());
                 }),
                 contentPadding: EdgeInsets.zero,
               ),
@@ -355,7 +357,7 @@ class _Profile_HomeState extends State<Profile_Home> {
                     androidAppBundleId: "com.atlabs.weeiapp", // Android app bundle package name
                     windowsProductId: '9NZTWSQNTD0S' // Microsoft store id for Widnows apps
                 );
-               // NavigatePage(context,CreateAccount());
+                // NavigatePage(context,CreateAccount());
               }),
               uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container():profileItems("Upgrade Storage",
                   "Check out", () async{
@@ -369,11 +371,11 @@ class _Profile_HomeState extends State<Profile_Home> {
               profileItems("Terms and conditions",
                   "Check out", ()async {
 
-                var url = await getSharedPrefrence(TERMSAND);
+                    var url = await getSharedPrefrence(TERMSAND);
                     final Uri _url = Uri.parse(url);
 
                     if (!await launchUrl(_url)) {
-                    throw Exception('Could not launch $_url');
+                      throw Exception('Could not launch $_url');
                     }
                   }),
 
@@ -384,7 +386,7 @@ class _Profile_HomeState extends State<Profile_Home> {
                     final Uri _url = Uri.parse(url);
 
                     if (!await launchUrl(_url)) {
-                    throw Exception('Could not launch $_url');
+                      throw Exception('Could not launch $_url');
                     }
                   }),
 
@@ -399,22 +401,22 @@ class _Profile_HomeState extends State<Profile_Home> {
                     }
                   }),
               profileItems("Logout account", "See you next time",
-                  () async {
-               logoutAccountAlert();
-                //signOut();
-              }),
+                      () async {
+                    logoutAccountAlert();
+                    //signOut();
+                  }),
 
               profileItems("Delete account", "Close this account",
                       () async {
                     deleteAccountAlert();
                     //signOut();
-                 }),
-
-              profileItems("BgPlay", "See you next time",
-                      () async {
-                // NavigatePage(context, MyApp());
-                    //signOut();
                   }),
+
+              // profileItems("BgPlay", "See you next time",
+              //         () async {
+              //      NavigatePage(context, DirectLink());
+              //       //signOut();
+              //     }),
               h(20),
             ],
           ),
@@ -429,7 +431,7 @@ class _Profile_HomeState extends State<Profile_Home> {
       builder: (context) => AlertDialog(
         backgroundColor: bgClr,
         shape:
-            RoundedRectangleBorder(borderRadius: new BorderRadius.circular(12)),
+        RoundedRectangleBorder(borderRadius: new BorderRadius.circular(12)),
         elevation: 10,
         title: const Text('Confirm Logout?',
             style: TextStyle(
@@ -537,132 +539,142 @@ class _Profile_HomeState extends State<Profile_Home> {
   }
 
   topSection() {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: liteBlack),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 21),
-        child: Column(
-          children: [
-            Row(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 100,
-                  child: CircleAvatar(
-                    radius: 34,
-                    backgroundColor: Colors.white,
-                    backgroundImage:
-                    MemoryImage(dataFromBase64String(profile)),
-                    //  backgroundImage:MemoryImage( dataFromBase64String(tstIcon)),
-                  ),
-                  width: 40,
-                ),
-                w(16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
-                      Text(username, style: size16_600W),
-                      Text(number,
-                          maxLines: 1, style: size12_500W)
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    NavigatePage(context, EditAccount(number: "",));
-                  //  editProfileBottomSheet();
-                  },
-                  child: const CircleAvatar(
-                    backgroundColor: Color(0xff363636),
-                    radius: 16,
-                    child: Icon(Icons.edit, color: Colors.white, size: 15),
-                  ),
-                )
-              ],
+    return
+      // isLoading==true?Center(child: CircularProgressIndicator(color: themeClr,)):
+      Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20), color: liteBlack),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 21),
+          child:isLoading==true?SizedBox(
+
+            height: 100.0,
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.white,
+              child: Container(),
             ),
-            h(20),
+          ): Column(
+            children: [
+              Row(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 100,
+                    child: CircleAvatar(
+                      radius: 34,
+                      backgroundColor: Colors.white,
+                      backgroundImage:
+                      MemoryImage(dataFromBase64String(profile)),
+                      //  backgroundImage:MemoryImage( dataFromBase64String(tstIcon)),
+                    ),
+                    width: 40,
+                  ),
+                  w(16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:  [
+                        Text(username, style: size16_600W),
+                        Text(number,
+                            maxLines: 1, style: size12_500W)
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      NavigatePage(context, EditAccount(number: "",));
+                      //  editProfileBottomSheet();
+                    },
+                    child: const CircleAvatar(
+                      backgroundColor: Color(0xff363636),
+                      radius: 16,
+                      child: Icon(Icons.edit, color: Colors.white, size: 15),
+                    ),
+                  )
+                ],
+              ),
+              h(20),
 
-            uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container():GestureDetector(
-             onTap: (){
+              uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container():GestureDetector(
+                  onTap: (){
 
-               Navigator.push(
-                   context,
-                   MaterialPageRoute(
-                       builder: (context) => const CleanFilesScreen()));
-             }
-             ,
-             child: ListTile(
-               title: Column(
-                 children: [
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CleanFilesScreen()));
+                  }
+                  ,
+                  child: ListTile(
+                    title: Column(
+                      children: [
 
-                   uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container(): Row(
-                     children: [
-                       Text( getFileSize(left, 1), style: size14_600W),
-                       w(5),
-                       Text("used", style: size14_500W),
-                       Spacer(),
-                       Text( getFileSize(total, 1), style: size14_600W),
-                       w(5),
-                       // Text("total", style: size14_500W),
-                     ],
-                   ),
-                   uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container():h(15),
-                   uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container(): storageIndicator(),
-                   //  uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container(): div(),
-                   // uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container():Row(
-                   //   children: [
-                   //     const Spacer(),
-                   //     GestureDetector(
-                   //         onTap: () {
-                   //           Navigator.push(
-                   //               context,
-                   //               MaterialPageRoute(
-                   //                   builder: (context) => const CleanFilesScreen()));
-                   //         },
-                   //         child: const Text("Clean", style: size16_500Red)),
-                   //     w(20),
-                   //     const Text(
-                   //       "Upgrade",
-                   //       style: size16_600G,
-                   //     )
-                   //   ],
-                   // )
+                        uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container(): Row(
+                          children: [
+                            Text( getFileSize(left, 1), style: size14_600W),
+                            w(5),
+                            Text("used", style: size14_500W),
+                            Spacer(),
+                            Text( getFileSize(total, 1), style: size14_600W),
+                            w(5),
+                            // Text("total", style: size14_500W),
+                          ],
+                        ),
+                        uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container():h(15),
+                        uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container(): storageIndicator(),
+                        //  uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container(): div(),
+                        // uid=="8Q76Af0KiJfS0TzbGnqyC190P0j1"?Container():Row(
+                        //   children: [
+                        //     const Spacer(),
+                        //     GestureDetector(
+                        //         onTap: () {
+                        //           Navigator.push(
+                        //               context,
+                        //               MaterialPageRoute(
+                        //                   builder: (context) => const CleanFilesScreen()));
+                        //         },
+                        //         child: const Text("Clean", style: size16_500Red)),
+                        //     w(20),
+                        //     const Text(
+                        //       "Upgrade",
+                        //       style: size16_600G,
+                        //     )
+                        //   ],
+                        // )
 
-                   // GestureDetector(
-                   //   onTap: () {
-                   //     Navigator.push(
-                   //         context,
-                   //         MaterialPageRoute(
-                   //             builder: (context) => const CleanFilesScreen()));
-                   //   },
-                   //
-                   //   child: Container(
-                   //     alignment: Alignment.center,
-                   //     decoration: BoxDecoration(
-                   //         borderRadius: BorderRadius.circular(10), color: themeClr),
-                   //     height: 35,
-                   //     child: Text("Clean Files", style: size14_600W),
-                   //   ),
-                   // )
-
-
-                 ],
-               ),
-              // subtitle: Text(subtitle, style: size12_400grey),
-               contentPadding: EdgeInsets.zero,
-             )
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => const CleanFilesScreen()));
+                        //   },
+                        //
+                        //   child: Container(
+                        //     alignment: Alignment.center,
+                        //     decoration: BoxDecoration(
+                        //         borderRadius: BorderRadius.circular(10), color: themeClr),
+                        //     height: 35,
+                        //     child: Text("Clean Files", style: size14_600W),
+                        //   ),
+                        // )
 
 
+                      ],
+                    ),
+                    // subtitle: Text(subtitle, style: size12_400grey),
+                    contentPadding: EdgeInsets.zero,
+                  )
 
-           )
 
-          ],
+
+              )
+
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 
   Widget profileItems(String title, String subtitle, GestureTapCallback onTap) {
@@ -683,55 +695,55 @@ class _Profile_HomeState extends State<Profile_Home> {
         context: context,
         isScrollControlled: true,
         builder: (context) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Center(
-                    child: Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 55,
-                          backgroundColor: Colors.grey[200],
-                        ),
-                        const Positioned(
-                            bottom: 0,
-                            right: 5,
-                            child: CircleAvatar(
-                              backgroundColor: Color(0xff363636),
-                              radius: 16,
-                              child: Icon(Icons.edit,
-                                  color: Colors.white, size: 15),
-                            ))
-                      ],
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Center(
+                child: Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 55,
+                      backgroundColor: Colors.grey[200],
                     ),
-                  ),
-                  nameTextBox(),
-                  emailTextBox(),
-                  phoneTextBox(),
-                  h(20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        const Spacer(),
-                        const Text("Cancel", style: size16_500Red),
-                        w(30),
-                        const Text(
-                          "Save",
-                          style: size16_600G,
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                        top: 10),
-                  ),
-                ],
+                    const Positioned(
+                        bottom: 0,
+                        right: 5,
+                        child: CircleAvatar(
+                          backgroundColor: Color(0xff363636),
+                          radius: 16,
+                          child: Icon(Icons.edit,
+                              color: Colors.white, size: 15),
+                        ))
+                  ],
+                ),
               ),
-            ));
+              nameTextBox(),
+              emailTextBox(),
+              phoneTextBox(),
+              h(20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    const Spacer(),
+                    const Text("Cancel", style: size16_500Red),
+                    w(30),
+                    const Text(
+                      "Save",
+                      style: size16_600G,
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                    top: 10),
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget nameTextBox() {
@@ -773,7 +785,7 @@ class _Profile_HomeState extends State<Profile_Home> {
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xff404040))),
               focusedBorder:
-                  UnderlineInputBorder(borderSide: BorderSide(color: grey)),
+              UnderlineInputBorder(borderSide: BorderSide(color: grey)),
               hintStyle: size14_500Grey,
               hintText: "Email"),
         ),
@@ -796,7 +808,7 @@ class _Profile_HomeState extends State<Profile_Home> {
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xff404040))),
               focusedBorder:
-                  UnderlineInputBorder(borderSide: BorderSide(color: grey)),
+              UnderlineInputBorder(borderSide: BorderSide(color: grey)),
               hintStyle: size14_500Grey,
               hintText: "Add Phone Number"),
         ),
