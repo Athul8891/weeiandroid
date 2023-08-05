@@ -20,6 +20,17 @@ class MinimalAudioPlayer extends StatefulWidget {
 class _MinimalAudioPlayerState extends State<MinimalAudioPlayer> {
   var seekListener = TextEditingController();
 
+  @override
+  void initState() {
+
+
+    widget.audioPlayer.setAudioSource(widget.playlist);
+
+
+
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -31,7 +42,6 @@ class _MinimalAudioPlayerState extends State<MinimalAudioPlayer> {
   Widget build(BuildContext context) {
   print("autoooooo");
   print(widget.autoPlay);
-    widget.audioPlayer.setAudioSource(widget.playlist);
     if (widget.autoPlay == false && widget.child == null) return PlayButton(player: widget.audioPlayer,autoplay: widget.autoPlay,seekListener:seekListener);
     return widget.child ?? const SizedBox();
   }

@@ -414,7 +414,10 @@ class _Profile_HomeState extends State<Profile_Home> {
 
               // profileItems("BgPlay", "See you next time",
               //         () async {
-              //      NavigatePage(context, DirectLink());
+              //      //NavigatePage(context, DirectLink());
+              //           Twitter tweet = await  TwitterExtractor.extract("https://twitter.com/i/status/1687451542184423424");
+              //           print("tweet.videos");
+              //           print(tweet.videos.single.source);
               //       //signOut();
               //     }),
               h(20),

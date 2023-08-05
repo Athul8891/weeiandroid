@@ -1237,8 +1237,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
       if(intialLoading==false){
         yourTime =  time.inMilliseconds;
-        print("yourTime");
-        print(yourTime);
+
         refreshState();
 
 
@@ -1545,7 +1544,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
                     },
                     icon: Icon(CupertinoIcons.bubble_left,
                         color:
-                        chatlistTap == true ? themeClr : Colors.white,
+                         Colors.white,
                         size: 18)),
               ),
               SizedBox(width: 12,),
@@ -2574,7 +2573,10 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
 
 
   chatBottomSheet(width) {
-    showModalBottomSheet(
+    setState(() {
+      chatlistTap=true;
+    });
+    Future<void> future =   showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (context) {
@@ -2627,10 +2629,18 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
                 ]);
               });
         });
-
+    future.then((void value) => _closeModal(value));
 
   }
+  void _closeModal(void value) {
 
+
+    setState(() {
+      chatlistTap=false;
+
+    });
+
+  }
   void restartAlert() {
     showDialog(
       context: context,
