@@ -552,11 +552,7 @@ class _Profile_HomeState extends State<Profile_Home> {
           child:isLoading==true?SizedBox(
 
             height: 100.0,
-            child: Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.white,
-              child: Container(),
-            ),
+            child: Center(child: CircularProgressIndicator(color: themeClr,)),
           ): Column(
             children: [
               Row(

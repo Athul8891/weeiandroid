@@ -831,7 +831,7 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
       // );
       musicAddStarted=false;
       intialLoading=false;
-      goLive();
+      Future.delayed(const Duration(seconds: 3), () {goLive(); });
       Future.delayed(const Duration(seconds: 5), () {goLive(); });
 
       if(widget.type=="JOIN"){
