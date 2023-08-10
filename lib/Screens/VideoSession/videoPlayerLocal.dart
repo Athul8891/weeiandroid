@@ -200,23 +200,21 @@ class _VideoPlayerScreenState extends State<VideoPlayerLocal> {
   void updateUrl(index)async{
 
 
-    var _url;
-
-    _url = await await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
-    final exists = await safeUrlCheck(
-      Uri.parse(_url),
-      //  userAgent: 'myexample/1.0.0 (+https://example.com)',
-    );
-    if (exists) {
-      _url = _url;
-      print('The url: https://google.com is NOT broken');
-    }else{
-      print('The url: https://google.com is  broken');
-
-      _url = await await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
-
-
-    }
+    var _url = await await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
+    // final exists = await safeUrlCheck(
+    //   Uri.parse(_url),
+    //   //  userAgent: 'myexample/1.0.0 (+https://example.com)',
+    // );
+    // if (exists) {
+    //   _url = _url;
+    //   print('The url: https://google.com is NOT broken');
+    // }else{
+    //   print('The url: https://google.com is  broken');
+    //
+    //   _url = await await getSong(playList[index]['fileUrl'].toString(),playList[index]['fileType'].toString());
+    //
+    //
+    // }
     setState(() {
       url=_url;
       currentIndex=index;

@@ -233,7 +233,8 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
     this.listenDataFromFireBase();
 
     this.listenExit();
-    this.listenError();
+    this.listenTime();
+   // this.listenError();
     if(widget.type=="CREATE"){
       this.listenIndex();
 
@@ -458,7 +459,31 @@ class _audioPlayerScreenState extends State<audioPlayerScreen> with WidgetsBindi
     });
   }
 
+  listenTime() {
+    var db = FirebaseDatabase.instance.reference();
+    db
+        .child('time')
+        .child(widget.id.toString())
 
+        .onChildChanged
+        .listen((data) {
+      switch (data.snapshot.key.toString()) {
+        case "time":
+        // do something
+
+          var rsp = data.snapshot
+              .child('time')
+              .value;
+             setState(() {
+               adminTime = int.parse(rsp.toString());
+
+             });
+     print("timeeee");
+     print(adminTime);
+          break;
+      }
+    });
+  }
 
 
 
