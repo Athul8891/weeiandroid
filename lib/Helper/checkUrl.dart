@@ -5,7 +5,7 @@ final yt = YoutubeExplode();
 Future<dynamic> getSong(url,sessionType) async {
   var link ;
   if(sessionType=="VIDEO"){
-     link = url;
+    link = url;
 
   }
 
@@ -16,11 +16,11 @@ Future<dynamic> getSong(url,sessionType) async {
 
   if(sessionType=="YTVIDEO"){
     final manifest = await yt.videos.streamsClient.getManifest(url);
-     link =manifest.muxed.withHighestBitrate().url.toString();
+    link =manifest.muxed.withHighestBitrate().url.toString();
   }
   if(sessionType=="YTAUDIO"){
     final manifest = await yt.videos.streamsClient.getManifest(url);
-   link = manifest.audioOnly.withHighestBitrate().url.toString();
+    link = manifest.audioOnly.withHighestBitrate().url.toString();
   }
 
   if(sessionType=="INSTA_AUDIO"){

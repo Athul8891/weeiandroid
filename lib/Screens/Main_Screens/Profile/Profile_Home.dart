@@ -31,7 +31,9 @@ import 'package:weei/Screens/Main_Screens/Chat/ChatScreen.dart';
 import 'package:weei/Screens/Main_Screens/Chat/blockedChats.dart';
 import 'package:weei/Testing/cheiwmusicplayer.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:weei/Testing/youtubeplay.dart';
 import 'package:weei/Widgets/miplay.dart';
+import 'package:weei/webpage.dart';
 
 class Profile_Home extends StatefulWidget {
   const Profile_Home({Key? key}) : super(key: key);
@@ -414,10 +416,8 @@ class _Profile_HomeState extends State<Profile_Home> {
 
               // profileItems("BgPlay", "See you next time",
               //         () async {
-              //      //NavigatePage(context, DirectLink());
-              //           Twitter tweet = await  TwitterExtractor.extract("https://twitter.com/i/status/1687451542184423424");
-              //           print("tweet.videos");
-              //           print(tweet.videos.single.source);
+              //      NavigatePage(context, YoutubePlayerDemoApp());
+              //
               //       //signOut();
               //     }),
               h(20),
